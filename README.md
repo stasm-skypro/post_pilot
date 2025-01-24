@@ -69,30 +69,29 @@
 
 --------------------------------------------------------------------------------
 ## Стрктура проекта
-БД - postpilotdb
+БД - postpilot
 ### Управление клиентами
 1. Модель «Получатель рассылки»:   - recipient
- * Email (строка, уникальное).                                    - email (char=150)
- * Ф. И. О. (строка).                                             - firsrt_name (char=150)
-                                                                  - second_name (char=150)
- * Комментарий (текст).                                           - comment (text)
+  * Email (строка, уникальное).                                    - email (char=150)
+  * Ф. И. О. (строка).                                             - full_name (char=150)
+  * Комментарий (текст).                                           - comment (text)
 
 
 2. Модель «Сообщение»:             - message
-* Тема письма (строка).                                           - subject (char=255)
-* Тело письма (текст).                                            - body_text (text)
+  * Тема письма (строка).                                           - subject (char=255)
+  * Тело письма (текст).                                            - body_text (text)
 
 
 3. Модель «Рассылка»:              - mailing
-* Дата и время первой отправки (datetime).                        - first_sent_at (datetime)
-* Дата и время окончания отправки (datetime).                     - sent_completed_at (datetime)
-* Статус (строка: 'Завершена', 'Создана', 'Запущена').            - status (char=10)
-* Сообщение (внешний ключ на модель «Сообщение»).                 - message (foreinkey to message)
-* Получатели («многие ко многим», связь с моделью «Получатель»).  - recievers (many-to-many key)
+  * Дата и время первой отправки (datetime).                        - first_sent_at (datetime)
+  * Дата и время окончания отправки (datetime).                     - sent_completed_at (datetime)
+  * Статус (строка: 'Завершена', 'Создана', 'Запущена').            - status (char=10)
+  * Сообщение (внешний ключ на модель «Сообщение»).                 - message (foreinkey to message)
+  * Получатели («многие ко многим», связь с моделью «Получатель»).  - recievers (many-to-many key)
 
 
 4. Модель «Попытка рассылки»:      - send_attempt
-* Дата и время попытки (datetime).                                - attempt_at (datetime)
-* Статус (строка: 'Успешно', 'Не успешно').                       - status (char=10)
-* Ответ почтового сервера (текст).                                - response (text)
-* Рассылка (внешний ключ на модель «Рассылка»).                   - mailing (foreinkey to mailing)
+  * Дата и время попытки (datetime).                                - attempt_at (datetime)
+  * Статус (строка: 'Успешно', 'Не успешно').                       - status (char=10)
+  * Ответ почтового сервера (текст).                                - response (text)
+  * Рассылка (внешний ключ на модель «Рассылка»).                   - mailing (foreinkey to mailing)
