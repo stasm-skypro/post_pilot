@@ -1,0 +1,29 @@
+[
+  {
+    "model": "postpilot.Recipient",
+    "pk": 1,
+    "fields": {
+      "email": "john.doe@example.com",
+      "full_name": "John Doe",
+      "comments": "Постоянный клиент, интересуется новыми предложениями."
+    }
+  },
+  {
+    "model": "postpilot.Recipient",
+    "pk": 2,
+    "fields": {
+      "email": "jane.smith@example.com",
+      "full_name": "Jane Smith",
+      "comments": "Запрашивала рассылку акций."
+    }
+  },
+  {
+    "model": "postpilot.Recipient",
+    "pk": 3,
+    "fields": {
+      "email": "michael.brown@example.com",
+      "full_name": "Michael Brown",
+      "comments": "9 августа 2014 года в городке Фергусон 18-летний чернокожий Майкл Браун погиб после того, как в него несколько раз выстрелил полицейский Даррен Уилсон."
+    }
+  }
+]

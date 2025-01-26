@@ -22,7 +22,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("postpilot/", include("postpilot.urls", namespace="postpilot"))
+    # path("postpilot/", include("postpilot.urls", namespace="postpilot"))
 ]
 
 if settings.DEBUG:

@@ -1,0 +1,32 @@
+[
+  {
+    "model": "postpilot.SendAttempt",
+    "pk": 1,
+    "fields": {
+      "attempt_at": "2025-01-25T10:00:00Z",
+      "status": "successfully",
+      "response": "Сообщение успешно доставлено.",
+      "mailing": 1
+    }
+  },
+  {
+    "model": "postpilot.SendAttempt",
+    "pk": 2,
+    "fields": {
+      "attempt_at": "2025-01-25T10:05:00Z",
+      "status": "failed",
+      "response": "Сервер недоступен. Попробуйте позже.",
+      "mailing": 1
+    }
+  },
+  {
+    "model": "postpilot.SendAttempt",
+    "pk": 3,
+    "fields": {
+      "attempt_at": "2025-01-25T10:10:00Z",
+      "status": "successfully",
+      "response": "Сообщение успешно доставлено второму получателю.",
+      "mailing": 2
+    }
+  }
+]

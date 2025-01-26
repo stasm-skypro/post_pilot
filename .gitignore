@@ -172,6 +172,3 @@ db.*
 # Mac OS special folder
 .DS_Store/
 .DS_Store
-
-# My what_todo file
-what_todo
