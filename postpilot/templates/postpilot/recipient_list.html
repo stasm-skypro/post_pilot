@@ -1,10 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Recipient List</title>
-</head>
-<body>
-  <h5>Recipient List</h5>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'navbar.html' %}
+
+<div class="pricing-header px-3 py-3 pt-md-1 pb-md-4 mx-auto text-center">
+  <div class="row">
+    <div class="col-4">
+      <p>Список рассылок</p>
+    </div>
+    <div class="col-4">
+      <p>Активные рассылки</p>
+    </div>
+    <div class="col-4">
+      <p>Уникальные покупатели</p>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

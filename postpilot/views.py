@@ -1,7 +1,14 @@
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView, UpdateView, DeleteView
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView, TemplateView
 
 from .models import Recipient
+
+
+class HomeView(TemplateView):
+    """
+    View для отображения главной страницы.
+    """
+    template_name = "home.html"
 
 
 class RecipientCreateView(CreateView):
