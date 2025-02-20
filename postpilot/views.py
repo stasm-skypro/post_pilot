@@ -4,6 +4,14 @@ from django.views.generic import CreateView, ListView, UpdateView, DeleteView, T
 from .models import Recipient, Message, Mailing
 
 
+class WelcomeView(TemplateView):
+    """
+    View для отображения страницы приглашения.
+    """
+
+    template_name = "welcome.html"
+
+
 class HomeView(TemplateView):
     """
     View для отображения главной страницы.
@@ -19,7 +27,7 @@ class RecipientCreateView(CreateView):
 
     model = Recipient
     fields = "__all__"
-    success_url = reverse_lazy("recipient_list")
+    success_url = reverse_lazy("home")
 
 
 class RecipientListView(ListView):
@@ -30,7 +38,7 @@ class RecipientListView(ListView):
     model = Recipient
     fields = "__all__"
     context_object_name = "recipients"
-    success_url = reverse_lazy("recipient_list")
+    success_url = reverse_lazy("home")
 
 
 class RecipientUpdateView(UpdateView):
@@ -40,7 +48,7 @@ class RecipientUpdateView(UpdateView):
 
     model = Recipient
     fields = "__all__"
-    success_url = reverse_lazy("recipient_list")
+    success_url = reverse_lazy("home")
 
 
 class RecipientDeleteView(DeleteView):
@@ -50,7 +58,7 @@ class RecipientDeleteView(DeleteView):
 
     model = Recipient
     fields = "__all__"
-    success_url = reverse_lazy("recipient_list")
+    success_url = reverse_lazy("home")
 
 
 class MessageCreateView(CreateView):
@@ -60,7 +68,7 @@ class MessageCreateView(CreateView):
 
     model = Message
     fields = "__all__"
-    success_url = reverse_lazy("recipient_list")
+    success_url = reverse_lazy("home")
 
 
 class MessageListView(ListView):
@@ -71,7 +79,7 @@ class MessageListView(ListView):
     model = Message
     fields = "__all__"
     context_object_name = "messages"
-    success_url = reverse_lazy("recipient_list")
+    success_url = reverse_lazy("home")
 
 
 class MessageUpdateView(UpdateView):
@@ -81,7 +89,7 @@ class MessageUpdateView(UpdateView):
 
     model = Message
     fields = "__all__"
-    success_url = reverse_lazy("recipient_list")
+    success_url = reverse_lazy("home")
 
 
 class MessageDeleteView(DeleteView):
@@ -91,7 +99,7 @@ class MessageDeleteView(DeleteView):
 
     model = Message
     fields = "__all__"
-    success_url = reverse_lazy("recipient_list")
+    success_url = reverse_lazy("home")
 
 
 class MailingCreateView(CreateView):
@@ -101,7 +109,7 @@ class MailingCreateView(CreateView):
 
     model = Mailing
     fields = "__all__"
-    success_url = reverse_lazy("recipient_list")
+    success_url = reverse_lazy("home")
 
 
 class MailingListView(ListView):
@@ -112,7 +120,7 @@ class MailingListView(ListView):
     model = Mailing
     fields = "__all__"
     context_object_name = "mailings"
-    success_url = reverse_lazy("recipient_list")
+    success_url = reverse_lazy("home")
 
 
 class MailingUpdateView(UpdateView):
@@ -122,7 +130,7 @@ class MailingUpdateView(UpdateView):
 
     model = Mailing
     fields = "__all__"
-    success_url = reverse_lazy("recipient_list")
+    success_url = reverse_lazy("home")
 
 
 class MailingDeleteView(DeleteView):
@@ -132,7 +140,7 @@ class MailingDeleteView(DeleteView):
 
     model = Mailing
     fields = "__all__"
-    success_url = reverse_lazy("recipient_list")
+    success_url = reverse_lazy("home")
 
 
 class SendAttemptListView(CreateView):
@@ -143,4 +151,4 @@ class SendAttemptListView(CreateView):
     model = Mailing
     fields = "__all__"
     context_object_name = "send_attempts"
-    success_url = reverse_lazy("recipient_list")
+    success_url = reverse_lazy("home")

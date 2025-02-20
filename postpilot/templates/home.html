@@ -3,23 +3,51 @@
 {% block content %}
 {% include 'navbar.html' %}
 
-<div class="container-fluid content-center pt-5 mt-5 pb-5 mb-5 bg-tertiary text-dark">
+<div class="pricing-header px-3 py-3 pt-md-1 pb-md-4 mx-auto text-center">
   <div class="row">
-    <div class="col-10">
-      <h1 class="text-center">POSTPILOT - создавайте рассылки по электронной почте за считанные минуты!</h1>
+    <div class="col-4">
+      <div class="card mb-4 box-shadow">
+        <div class="card-header">
+          <h4 class="my-0 fw-bold" style="color: #34373a;">Список рассылок</h4>
+        </div>
+        <div class="card-body">
+          <ul class="list-unstyled mt-3 mb-4">
+            <li>1. Создание рассылок</li>
+            <li>2. Редактирование рассылок</li>
+            <li>3. Удаление рассылок</li>
+          </ul>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-10">
-      <img src="/media/postpilot/postpilot_small.jpg" width="50%" class="d-block ms-auto">
+    <div class="col-4">
+      <div class="card mb-4 box-shadow">
+        <div class="card-header">
+          <h4 class="my-0 fw-bold" style="color: #34373a;">Активные рассылки</h4>
+        </div>
+        <div class="card-body">
+          <ul class="list-unstyled mt-3 mb-4">
+            <li>1. Создание рассылок</li>
+            <li>2. Редактирование рассылок</li>
+            <li>3. Удаление рассылок</li>
+          </ul>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-10">
-      <a href="#" class="btn btn-primary w-25 d-block mx-auto">Создать рассылку</a>
+    <div class="col-4">
+      <div class="card mb-4 box-shadow">
+        <div class="card-header">
+          <h4 class="my-0 fw-bold" style="color: #34373a;">Уникальные получатели</h4>
+        </div>
+        <div class="card-body">
+          <ul class="list-unstyled mt-3 mb-4">
+            <li>1. Создание получателя</li>
+            <li>2. Редактирование получателя</li>
+            <li>3. Удаление получателя</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </div>
-
 
 {% endblock %}
