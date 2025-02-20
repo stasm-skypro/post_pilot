@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Recipient(models.Model):
-    """Класс получателя рассылки"""
+    """Класс получателя рассылки. Модель 'Получатель рассылки'."""
 
     email = models.EmailField("Email", unique=True)
     full_name = models.CharField("ФИО", max_length=100, blank=True)
@@ -18,7 +18,7 @@ class Recipient(models.Model):
 
 
 class Message(models.Model):
-    """Класс сообщения"""
+    """Класс сообщения. Модель 'Сообщение'."""
 
     subject = models.CharField("Тема", max_length=100)
     body_text = models.TextField("Текст письма")
@@ -35,7 +35,7 @@ class Message(models.Model):
 
 
 class Mailing(models.Model):
-    """Класс рассылки"""
+    """Класс рассылки. Модель 'Рассылка'."""
 
     STATUS_CHOICES = [
         ("completed", "Completed"),
@@ -61,7 +61,7 @@ class Mailing(models.Model):
 
 
 class SendAttempt(models.Model):
-    """Класс попытки отправки"""
+    """Класс попытки рассылки. Модель 'Попытка рассылки'."""
 
     STATUS_CHOICES = [
         ("successfully", "Successfully"),

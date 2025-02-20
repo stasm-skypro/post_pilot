@@ -7,7 +7,9 @@
     {% block title %} POSTPILOT {% endblock %}
   </title>
   <!-- Подключение Bootstrap CSS -->
-  <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css"/>
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}"/>
+<!--  <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css"/>-->
 </head>
 
 <body>
@@ -20,6 +22,8 @@
 </div>
 
 <!-- Подключение Bootstrap JS -->
-<script src="/static/js/bootstrap.bundle.min.js"></script>
+{% load static %}
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<!--<script src="/static/js/bootstrap.bundle.min.js"></script>-->
 </body>
 </html>
