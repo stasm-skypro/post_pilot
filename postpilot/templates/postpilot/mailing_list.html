@@ -12,7 +12,9 @@
         </div>
         <div class="card-body">
           <ul class="list-unstyled mt-3 mb-4">
-            <li>Всего рассылок: {{ mailings }}</li>
+            <li class="card-text fw-bold">Всего рассылок: {{ mailings.count }}</li>
+            <br />
+            <li><a class="btn btn-primary" href="#" role="button">Создать рассылку</a></li>
           </ul>
         </div>
       </div>
