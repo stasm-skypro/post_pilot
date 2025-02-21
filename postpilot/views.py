@@ -1,7 +1,17 @@
+import logging
+
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView, TemplateView
 
 from .models import Recipient, Message, Mailing
+
+
+# Настройка логгера
+logger = logging.getLogger("[postpilot")
+logger.setLevel(logging.DEBUG)
+handler = logging.FileHandler("postpilot/logs/reports.log", "a", "utf-8")
+handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s: %(message)s"))
+logger.addHandler(handler)
 
 
 class WelcomeView(TemplateView):
@@ -118,6 +128,17 @@ class MailingCreateView(CreateView):
     fields = "__all__"
     success_url = reverse_lazy("home")
 
+    def form_valid(self, form):
+        """Дополнительная обработка перед сохранением формы."""
+        self.object = form.save()  # Сохраняем объект формы в базу
+        logger.info("Рассылка успешно создана. Статус рассылки: '%s'. Сообщение: '%s'" % (self.object.status, self.object.message))
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        """Обработка в случае неверной формы."""
+        logger.warning("Ошибка при создании рассылки: %s" % form.errors)
+        return super().form_invalid(form)
+
 
 class MailingListView(ListView):
     """
@@ -146,7 +167,18 @@ class MailingUpdateView(UpdateView):
 
     model = Mailing
     fields = "__all__"
-    success_url = reverse_lazy("home")
+    success_url = reverse_lazy("mailing_list")
+
+    def form_valid(self, form):
+        """Дополнительная обработка перед сохранением формы."""
+        self.object = form.save()  # Сохраняем объект формы в базу
+        logger.info("Рассылка успешно обновлена. Статус рассылки: '%s'. Сообщение: '%s'" % (self.object.status, self.object.message))
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        """Обработка в случае неверной формы."""
+        logger.warning("Ошибка при обновлении рассылки: %s" % form.errors)
+        return super().form_invalid(form)
 
 
 class MailingDeleteView(DeleteView):
@@ -156,7 +188,18 @@ class MailingDeleteView(DeleteView):
 
     model = Mailing
     fields = "__all__"
-    success_url = reverse_lazy("home")
+    success_url = reverse_lazy("mailing_list")
+
+    def post(self, request, *args, **kwargs):
+        """Переопределение метода POST для вызова delete."""
+        logger.info("Удаление рассылки через POST-запрос.")
+        return self.delete(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        """Переопределение метода delete для логирования."""
+        product = self.get_object()
+        logger.info("Рассылка успешно удалена. Статус рассылки: '%s'. Сообщение: '%s'" % (self.object.status, self.object.message))
+        return super().delete(request, *args, **kwargs)
 
 
 class SendAttemptListView(CreateView):
