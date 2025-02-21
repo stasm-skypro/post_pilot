@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %} POSTPILOT - добавить или изменить рассылку {% endblock %}
+{% block title %} POSTPILOT - добавить/изменить рассылку {% endblock %}
 {% block content %}
 
 {% include 'navbar.html' %}
@@ -15,11 +15,11 @@
               {{ form.non_field_error }}
               {{ form.as_p }}
             </div>
-            <div class="btn-group">
+            <div class="button-group mx-auto">
               <button type="submit" class="btn btn-primary">Сохранить</button>
               <a href="{% url 'postpilot:mailing_list' %}" class="btn btn-secondary">Отменить</a>
             </div>
-            <br/>
+            <p>&nbsp;</p>
           </div>
         </form>
       </div>

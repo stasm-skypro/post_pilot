@@ -9,10 +9,11 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
+          <a class="nav-link active" aria-current="page" href="{% url 'postpilot:home' %}">Главная</a>
           <a class="nav-link active" aria-current="page" href="{% url 'postpilot:mailing_list' %}">Список
             рассылок</a>
-          <a class="nav-link" href="#">Активные рассылки</a>
-          <a class="nav-link" href="#">Уникальные получатели</a>
+          <a class="nav-link" href="#">Сообщения</a>
+          <a class="nav-link" href="{% url 'postpilot:recipient_list' %}">Уникальные получатели</a>
         </div>
       </div>
     </div>

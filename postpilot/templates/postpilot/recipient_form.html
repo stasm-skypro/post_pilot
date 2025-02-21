@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %} POSTPILOT - добавить получателя {% endblock %}
+{% block title %} POSTPILOT - добавить/изменить получателя {% endblock %}
 {% block content %}
 
 {% include 'navbar.html' %}
@@ -17,7 +17,7 @@
             </div>
             <div class="btn-group">
               <button type="submit" class="btn btn-primary">Сохранить</button>
-              <a href="{% url 'postpilot:home' %}" class="btn btn-secondary">Отменить</a>
+              <a href="{% url 'postpilot:recipient_list' %}" class="btn btn-secondary">Отменить</a>
             </div>
             <br/>
           </div>

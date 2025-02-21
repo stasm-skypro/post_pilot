@@ -14,6 +14,7 @@ handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s: 
 logger.addHandler(handler)
 
 
+# -- Welcome view --
 class WelcomeView(TemplateView):
     """
     View для отображения страницы приглашения.
@@ -22,6 +23,7 @@ class WelcomeView(TemplateView):
     template_name = "welcome.html"
 
 
+# -- Home view --
 class HomeView(TemplateView):
     """
     View для отображения главной страницы.
@@ -37,6 +39,7 @@ class HomeView(TemplateView):
         return context
 
 
+# -- Recipient views --
 class RecipientCreateView(CreateView):
     """
     View для создания нового получателя.
@@ -45,6 +48,17 @@ class RecipientCreateView(CreateView):
     model = Recipient
     fields = "__all__"
     success_url = reverse_lazy("home")
+
+    def form_valid(self, form):
+        """Дополнительная обработка перед сохранением формы."""
+        self.object = form.save()  # Сохраняем объект формы в базу
+        logger.info("Получатель '%s' рассылки успешно создан." % self.object.full_name)
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        """Обработка в случае неверной формы."""
+        logger.warning("Ошибка при создании получателя рассылки: %s" % form.errors)
+        return super().form_invalid(form)
 
 
 class RecipientListView(ListView):
@@ -78,6 +92,7 @@ class RecipientDeleteView(DeleteView):
     success_url = reverse_lazy("home")
 
 
+# -- Message views --
 class MessageCreateView(CreateView):
     """
     View для создания нового сообщения.
@@ -119,6 +134,7 @@ class MessageDeleteView(DeleteView):
     success_url = reverse_lazy("home")
 
 
+# -- Mailing views --
 class MailingCreateView(CreateView):
     """
     View для создания рассылки.
@@ -187,7 +203,6 @@ class MailingDeleteView(DeleteView):
     """
 
     model = Mailing
-    fields = "__all__"
     success_url = reverse_lazy("mailing_list")
 
     def post(self, request, *args, **kwargs):
@@ -202,6 +217,7 @@ class MailingDeleteView(DeleteView):
         return super().delete(request, *args, **kwargs)
 
 
+# -- SendAttempt views --
 class SendAttemptListView(CreateView):
     """
     View для отображения списка попыток отправки.
