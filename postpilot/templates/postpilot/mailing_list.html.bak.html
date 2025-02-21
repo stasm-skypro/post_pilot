@@ -5,8 +5,6 @@
 
 <div class="pricing-header px-3 py-3 pt-md-1 pb-md-4 mx-auto text-center">
   <div class="row">
-
-    <!-- Колонка: Все рассылки -->
     <div class="col-4">
       <div class="card mb-4 box-shadow">
         <div class="card-header">
@@ -17,10 +15,12 @@
             <li class="card-text fw-bold">Всего рассылок: {{ mailings|length }}</li>
             <br/>
 
-            <!-- Чекбокс -->
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="toggle-checkbox-1" onchange="toggleList('mailings-list-1')">
-              <label class="form-check-label" for="toggle-checkbox-1">Показать рассылки</label>
+            <!-- Кнопка для показа/скрытия -->
+            <div class="mb-3">
+              <button class="btn btn-primary w-50" onclick="toggleList('mailings-list-1', 'toggle-button-1')"
+                      id="toggle-button-1">
+                Показать рассылки
+              </button>
             </div>
 
             <!-- Список всех рассылок (изначально скрыт) -->
@@ -41,7 +41,6 @@
       </div>
     </div>
 
-    <!-- Колонка: Активные рассылки -->
     <div class="col-4">
       <div class="card mb-4 box-shadow">
         <div class="card-header">
@@ -52,13 +51,15 @@
             <li class="card-text fw-bold">Активных рассылок: {{ mailings_started|length }}</li>
             <br/>
 
-            <!-- Чекбокс -->
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="toggle-checkbox-2" onchange="toggleList('mailings-list-2')">
-              <label class="form-check-label" for="toggle-checkbox-2">Показать активные рассылки</label>
+            <!-- Кнопка для показа/скрытия -->
+            <div class="mb-3">
+              <button class="btn btn-primary w-50" onclick="toggleList('mailings-list-2', 'toggle-button-2')"
+                      id="toggle-button-2">
+                Показать рассылки
+              </button>
             </div>
 
-            <!-- Список активных рассылок (изначально скрыт) -->
+            <!-- Список рассылок (изначально скрыт) -->
             <div class="container">
               <ul id="mailings-list-2" class="list-group w-100" style="display: none;">
                 {% for mailing in mailings_started %}
@@ -76,7 +77,6 @@
       </div>
     </div>
 
-    <!-- Колонка: Уникальные получатели -->
     <div class="col-4">
       <div class="card mb-4 box-shadow">
         <div class="card-header">
@@ -85,27 +85,6 @@
         <div class="card-body">
           <ul class="list-unstyled mt-3 mb-4">
             <li class="card-text fw-bold">Уникальных получателей: {{ recipients|length }}</li>
-            <br/>
-
-            <!-- Чекбокс -->
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="toggle-checkbox-3" onchange="toggleList('mailings-list-3')">
-              <label class="form-check-label" for="toggle-checkbox-3">Показать уникальных получателей</label>
-            </div>
-
-            <!-- Список уникальных получателей (изначально скрыт) -->
-            <div class="container">
-              <ul id="mailings-list-3" class="list-group w-100" style="display: none;">
-                {% for recipient in recipients %}
-                <li class="list-group-item">
-                  <div class="row">
-                    <div class="col-4 text-start"><strong>{{ recipient.full_name }}</strong></div>
-                    <div class="col-8 text-end text-muted">{{ recipient.email }}</div>
-                  </div>
-                </li>
-                {% endfor %}
-              </ul>
-            </div>
           </ul>
         </div>
       </div>
@@ -113,12 +92,25 @@
   </div>
 </div>
 
-<!-- Скрипт -->
+<!-- Скрипт вынесен в конец -->
 <script>
-    function toggleList(listId) {
+    function toggleList(listId, buttonId) {
         let list = document.getElementById(listId);
-        list.style.display = list.style.display === "none" ? "block" : "none";
+        let button = document.getElementById(buttonId);
+
+        if (list.style.display === "none") {
+            list.style.display = "block";
+            button.textContent = "Скрыть рассылки";
+            button.classList.remove("btn-primary");
+            button.classList.add("btn-primary");
+        } else {
+            list.style.display = "none";
+            button.textContent = "Показать рассылки";
+            button.classList.remove("btn-primary");
+            button.classList.add("btn-primary");
+        }
     }
 </script>
 
 {% endblock %}
+

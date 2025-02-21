@@ -19,6 +19,13 @@ class HomeView(TemplateView):
 
     template_name = "home.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["mailings"] = Mailing.objects.all()  # Все рассылки
+        context["mailings_started"] = Mailing.objects.filter(status="started")  # Только активные рассылки
+        context["recipients"] = Recipient.objects.all()  # Получатели
+        return context
+
 
 class RecipientCreateView(CreateView):
     """
@@ -121,6 +128,15 @@ class MailingListView(ListView):
     fields = "__all__"
     context_object_name = "mailings"
     success_url = reverse_lazy("home")
+
+    def get_context_data(self, **kwargs):
+        """
+        Добавляем переменную в контекст для отображения количества рассылок со статусом "started".
+        """
+        context = super().get_context_data(**kwargs)
+        # context["started_count"] = sum(1 for mailing in self.object_list if mailing.status == "started")
+        context["mailings_started"] = Mailing.objects.filter(status="started")
+        return context
 
 
 class MailingUpdateView(UpdateView):

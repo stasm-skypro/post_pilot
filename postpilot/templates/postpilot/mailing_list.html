@@ -5,6 +5,8 @@
 
 <div class="pricing-header px-3 py-3 pt-md-1 pb-md-4 mx-auto text-center">
   <div class="row">
+
+    <!-- Колонка: Все рассылки -->
     <div class="col-4">
       <div class="card mb-4 box-shadow">
         <div class="card-header">
@@ -12,13 +14,34 @@
         </div>
         <div class="card-body">
           <ul class="list-unstyled mt-3 mb-4">
-            <li class="card-text fw-bold">Всего рассылок: {{ mailings.count }}</li>
-            <br />
-            <li><a class="btn btn-primary" href="#" role="button">Создать рассылку</a></li>
+            <li class="card-text fw-bold">Всего рассылок: {{ mailings|length }}</li>
+            <br/>
+
+            <!-- Чекбокс -->
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="toggle-checkbox-1" onchange="toggleList('mailings-list-1')">
+              <label class="form-check-label" for="toggle-checkbox-1">Показать рассылки</label>
+            </div>
+
+            <!-- Список всех рассылок (изначально скрыт) -->
+            <div class="container">
+              <ul id="mailings-list-1" class="list-group w-100" style="display: none;">
+                {% for mailing in mailings %}
+                <li class="list-group-item">
+                  <div class="row">
+                    <div class="col-8 text-start"><strong>{{ mailing.message }}</strong></div>
+                    <div class="col-4 text-end text-muted">{{ mailing.get_status_display }}</div>
+                  </div>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
           </ul>
         </div>
       </div>
     </div>
+
+    <!-- Колонка: Активные рассылки -->
     <div class="col-4">
       <div class="card mb-4 box-shadow">
         <div class="card-header">
@@ -26,13 +49,34 @@
         </div>
         <div class="card-body">
           <ul class="list-unstyled mt-3 mb-4">
-            <li>1. Создание рассылок</li>
-            <li>2. Редактирование рассылок</li>
-            <li>3. Удаление рассылок</li>
+            <li class="card-text fw-bold">Активных рассылок: {{ mailings_started|length }}</li>
+            <br/>
+
+            <!-- Чекбокс -->
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="toggle-checkbox-2" onchange="toggleList('mailings-list-2')">
+              <label class="form-check-label" for="toggle-checkbox-2">Показать активные рассылки</label>
+            </div>
+
+            <!-- Список активных рассылок (изначально скрыт) -->
+            <div class="container">
+              <ul id="mailings-list-2" class="list-group w-100" style="display: none;">
+                {% for mailing in mailings_started %}
+                <li class="list-group-item">
+                  <div class="row">
+                    <div class="col-8 text-start"><strong>{{ mailing.message }}</strong></div>
+                    <div class="col-4 text-end text-muted">{{ mailing.get_status_display }}</div>
+                  </div>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
           </ul>
         </div>
       </div>
     </div>
+
+    <!-- Колонка: Уникальные получатели -->
     <div class="col-4">
       <div class="card mb-4 box-shadow">
         <div class="card-header">
@@ -40,14 +84,21 @@
         </div>
         <div class="card-body">
           <ul class="list-unstyled mt-3 mb-4">
-            <li>1. Создание получателя</li>
-            <li>2. Редактирование получателя</li>
-            <li>3. Удаление получателя</li>
+            <li class="card-text fw-bold">Уникальных получателей: {{ recipients|length }}</li>
+            <br/>
           </ul>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<!-- Скрипт -->
+<script>
+    function toggleList(listId) {
+        let list = document.getElementById(listId);
+        list.style.display = list.style.display === "none" ? "block" : "none";
+    }
+</script>
 
 {% endblock %}
