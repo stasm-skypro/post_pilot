@@ -30,7 +30,12 @@
                 {% for mailing in mailings %}
                 <li class="list-group-item">
                   <div class="row">
-                    <div class="col-6 text-start"><strong>{{ mailing.message }}</strong></div>
+                    <div class="col-5 text-start"><strong>{{ mailing.message }}</strong></div>
+                    <div class="col-1">
+                      {% if mailing.status == 'started' %}
+                        <img src="/media/postpilot/train.gif" alt="Идет рассылка">
+                      {% endif %}
+                    </div>
                     <div class="col-2 text-end text-muted">{{ mailing.get_status_display }}</div>
                     <div class="col-2"><a class="btn btn-primary w-100" href="{% url 'postpilot:mailing_update' mailing.id %}" role="button">Редактировать</a></div>
                     <div class="col-2"><a class="btn btn-danger w-100" href="{% url 'postpilot:mailing_delete' mailing.id %}" role="button">Удалить</a></div>
