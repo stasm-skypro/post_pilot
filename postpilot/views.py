@@ -3,10 +3,11 @@ import logging
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView, TemplateView
 
+from .forms import RecipientForm, MessageForm, MailingForm
 from .models import Recipient, Message, Mailing
 
 # Настройка логгера
-logger = logging.getLogger("[postpilot")
+logger = logging.getLogger("postpilot")
 logger.setLevel(logging.DEBUG)
 handler = logging.FileHandler("postpilot/logs/reports.log", "a", "utf-8")
 handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s: %(message)s"))
@@ -45,7 +46,7 @@ class RecipientCreateView(CreateView):
     """
 
     model = Recipient
-    fields = "__all__"
+    form_class = RecipientForm
     success_url = reverse_lazy("recipient_list")
 
     def form_valid(self, form):
@@ -67,7 +68,7 @@ class RecipientListView(ListView):
     """
 
     model = Recipient
-    fields = "__all__"
+    form_class = RecipientForm
     context_object_name = "recipients"
 
 
@@ -77,7 +78,7 @@ class RecipientUpdateView(UpdateView):
     """
 
     model = Recipient
-    fields = "__all__"
+    form_class = RecipientForm
     success_url = reverse_lazy("recipient_list")
 
     def form_valid(self, form):
@@ -99,7 +100,7 @@ class RecipientDeleteView(DeleteView):
     """
 
     model = Recipient
-    fields = "__all__"
+    form_class = RecipientForm
     success_url = reverse_lazy("recipient_list")
 
     def post(self, request, *args, **kwargs):
@@ -122,7 +123,7 @@ class MessageCreateView(CreateView):
     """
 
     model = Message
-    fields = "__all__"
+    form_class = MessageForm
     success_url = reverse_lazy("message_list")
 
     def form_valid(self, form):
@@ -144,7 +145,7 @@ class MessageListView(ListView):
     """
 
     model = Message
-    fields = "__all__"
+    form_class = MessageForm
     context_object_name = "messages"
 
 
@@ -154,7 +155,7 @@ class MessageUpdateView(UpdateView):
     """
 
     model = Message
-    fields = "__all__"
+    form_class = MessageForm
     success_url = reverse_lazy("message_list")
 
     def form_valid(self, form):
@@ -176,7 +177,7 @@ class MessageDeleteView(DeleteView):
     """
 
     model = Message
-    fields = "__all__"
+    form_class = MessageForm
     success_url = reverse_lazy("message_list")
 
     def post(self, request, *args, **kwargs):
@@ -199,7 +200,7 @@ class MailingCreateView(CreateView):
     """
 
     model = Mailing
-    fields = "__all__"
+    form_class = MailingForm
     success_url = reverse_lazy("mailing_list")
 
     def form_valid(self, form):
@@ -221,7 +222,7 @@ class MailingListView(ListView):
     """
 
     model = Mailing
-    fields = "__all__"
+    form_class = MailingForm
     context_object_name = "mailings"
 
     def get_context_data(self, **kwargs):
@@ -240,7 +241,7 @@ class MailingUpdateView(UpdateView):
     """
 
     model = Mailing
-    fields = "__all__"
+    form_class = MailingForm
     success_url = reverse_lazy("mailing_list")
 
     def form_valid(self, form):

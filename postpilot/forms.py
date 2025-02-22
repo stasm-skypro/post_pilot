@@ -1,13 +1,15 @@
 import os
 
 from django import forms
+
+from .mixins import StyledFormMixin
 from .models import Recipient, Message, Mailing
 from dotenv import load_dotenv
 
 load_dotenv(override=True)
 
 
-class RecipientForm(forms.ModelForm):
+class RecipientForm(StyledFormMixin, forms.ModelForm):
     """Форма получателя рассылки."""
 
     class Meta:
@@ -43,7 +45,7 @@ def clean_email(self):
     return cleaned_data
 
 
-class MessageForm(forms.ModelForm):
+class MessageForm(StyledFormMixin, forms.ModelForm):
     """Форма сообщения рассылки."""
 
     class Meta:
@@ -76,7 +78,7 @@ class MessageForm(forms.ModelForm):
         return cleaned_data
 
 
-class MailingForm(forms.ModelForm):
+class MailingForm(StyledFormMixin,forms.ModelForm):
     """Форма рассылки."""
 
     class Meta:
