@@ -1,5 +1,6 @@
 import os
 
+import logging
 from django import forms
 
 from .mixins import StyledFormMixin
@@ -8,40 +9,56 @@ from dotenv import load_dotenv
 
 load_dotenv(override=True)
 
+# Настройка логгера
+logger = logging.getLogger("postpilot")
+logger.setLevel(logging.DEBUG)
+handler = logging.FileHandler("postpilot/logs/reports.log", "a", "utf-8")
+handler.setFormatter(
+    logging.Formatter("%(asctime)s - %(name)s - %(levelname)s: %(message)s")
+)
+logger.addHandler(handler)
+
 
 class RecipientForm(StyledFormMixin, forms.ModelForm):
     """Форма получателя рассылки."""
 
     class Meta:
         model = Recipient
-        fields = '__all__'
+        fields = "__all__"
         labels = {
-            'email': 'Email',
-            'full_name': 'ФИО',
-            'comments': 'Комментарии',
+            "email": "Email",
+            "full_name": "ФИО",
+            "comments": "Комментарии",
         }
 
     def clean_full_name(self):
         """Очищаем поле 'ФИО' от запрещенных слов."""
 
-        forbidden_words = os.getenv("FORBIDDEN_WORDS").split(',')
+        forbidden_words = os.getenv("FORBIDDEN_WORDS").split(",")
 
         cleaned_data = super().clean()
-        full_name = cleaned_data['full_name']
+        full_name = cleaned_data["full_name"]
         for word in forbidden_words:
             if word in full_name.lower():
-                raise forms.ValidationError("В поле 'ФИО' запрещено использовать слово '%s'" % word)
+                logger.warning("В поле 'ФИО' запрещено использовать слово '%s'" % word)
+                raise forms.ValidationError(
+                    "В поле 'ФИО' запрещено использовать слово '%s'" % word
+                )
+
         return cleaned_data
 
 
 def clean_email(self):
-    forbidden_words = os.getenv("FORBIDDEN_WORDS").split(',')
+    forbidden_words = os.getenv("FORBIDDEN_WORDS").split(",")
 
     cleaned_data = super().clean()
-    email = cleaned_data['email']
+    email = cleaned_data["email"]
     for word in forbidden_words:
         if word in email.lower():
-            raise forms.ValidationError("В поле 'Email' запрещено использовать слово '%s'" % word)
+            logger.warning("В поле 'Email' запрещено использовать слово '%s'" % word)
+            raise forms.ValidationError(
+                "В поле 'Email' запрещено использовать слово '%s'" % word
+            )
     return cleaned_data
 
 
@@ -50,54 +67,65 @@ class MessageForm(StyledFormMixin, forms.ModelForm):
 
     class Meta:
         model = Message
-        fields = '__all__'
+        fields = "__all__"
         labels = {
-            'subject': 'Тема',
-            'body_text': 'Текст',
-            'body_html': 'HTML',
+            "subject": "Тема",
+            "body_text": "Текст",
+            "body_html": "HTML",
         }
 
     def clean_subject(self):
-        forbidden_words = os.getenv("FORBIDDEN_WORDS").split(',')
+        forbidden_words = os.getenv("FORBIDDEN_WORDS").split(",")
 
         cleaned_data = super().clean()
-        subject = cleaned_data['subject']
+        subject = cleaned_data["subject"]
         for word in forbidden_words:
             if word in subject.lower():
-                raise forms.ValidationError("В поле 'Тема' запрещено использовать слово '%s'" % word)
+                logger.warning("В поле 'Тема' запрещено использовать слово '%s'" % word)
+                raise forms.ValidationError(
+                    "В поле 'Тема' запрещено использовать слово '%s'" % word
+                )
         return cleaned_data
 
     def clean_body_text(self):
-        forbidden_words = os.getenv("FORBIDDEN_WORDS").split(',')
+        forbidden_words = os.getenv("FORBIDDEN_WORDS").split(",")
 
         cleaned_data = super().clean()
-        body_text = cleaned_data['body_text']
+        body_text = cleaned_data["body_text"]
         for word in forbidden_words:
             if word.lower() in body_text.lower():
-                raise forms.ValidationError("В поле 'Текст' запрещено использовать слово '%s'" % word)
+                logger.warning(
+                    "В поле 'Текст' запрещено использовать слово '%s'" % word
+                )
+                raise forms.ValidationError(
+                    "В поле 'Текст' запрещено использовать слово '%s'" % word
+                )
         return cleaned_data
 
 
-class MailingForm(StyledFormMixin,forms.ModelForm):
+class MailingForm(StyledFormMixin, forms.ModelForm):
     """Форма рассылки."""
 
     class Meta:
         model = Mailing
-        fields = '__all__'
+        fields = "__all__"
         labels = {
-            'first_sent_at': 'Дата и время первой отправки',
-            'sent_completed_at': 'Дата и время окончания отправки',
-            'status': 'Статус',
-            'message': 'Сообщение',
-            'recipients': 'Получатели',
+            "first_sent_at": "Дата и время первой отправки",
+            "sent_completed_at": "Дата и время окончания отправки",
+            "status": "Статус",
+            "message": "Сообщение",
+            "recipients": "Получатели",
         }
 
     def clean_dates(self):
         cleaned_data = super().clean()
-        start_date = cleaned_data.get('start_date')
-        end_date = cleaned_data.get('end_date')
+        start_date = cleaned_data.get("start_date")
+        end_date = cleaned_data.get("end_date")
         if start_date and end_date and start_date > end_date:
-            raise forms.ValidationError("Дата начала рассылки не может быть позже даты окончания")
+            logger.warning("Дата начала рассылки не может быть позже даты окончания")
+            raise forms.ValidationError(
+                "Дата начала рассылки не может быть позже даты окончания"
+            )
         return cleaned_data
 
     # Нет необходимости проверять на чистоту получателей и сообщений, так как они проверяются в соответствующих формах.
