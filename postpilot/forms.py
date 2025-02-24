@@ -37,7 +37,7 @@ class RecipientForm(StyledFormMixin, forms.ModelForm):
         forbidden_words = os.getenv("FORBIDDEN_WORDS").split(",")
 
         cleaned_data = super().clean()
-        full_name = cleaned_data["full_name"]
+        full_name = cleaned_data.get("full_name", "")
         for word in forbidden_words:
             if word in full_name.lower():
                 logger.warning("В поле 'ФИО' запрещено использовать слово '%s'" % word)
@@ -45,21 +45,21 @@ class RecipientForm(StyledFormMixin, forms.ModelForm):
                     "В поле 'ФИО' запрещено использовать слово '%s'" % word
                 )
 
-        return cleaned_data
+        return full_name
 
 
 def clean_email(self):
     forbidden_words = os.getenv("FORBIDDEN_WORDS").split(",")
 
     cleaned_data = super().clean()
-    email = cleaned_data["email"]
+    email = cleaned_data.get("email", "")
     for word in forbidden_words:
         if word in email.lower():
             logger.warning("В поле 'Email' запрещено использовать слово '%s'" % word)
             raise forms.ValidationError(
                 "В поле 'Email' запрещено использовать слово '%s'" % word
             )
-    return cleaned_data
+    return email
 
 
 class MessageForm(StyledFormMixin, forms.ModelForm):
@@ -78,20 +78,20 @@ class MessageForm(StyledFormMixin, forms.ModelForm):
         forbidden_words = os.getenv("FORBIDDEN_WORDS").split(",")
 
         cleaned_data = super().clean()
-        subject = cleaned_data["subject"]
+        subject = cleaned_data.get("subject", "")
         for word in forbidden_words:
             if word in subject.lower():
                 logger.warning("В поле 'Тема' запрещено использовать слово '%s'" % word)
                 raise forms.ValidationError(
                     "В поле 'Тема' запрещено использовать слово '%s'" % word
                 )
-        return cleaned_data
+        return subject
 
     def clean_body_text(self):
         forbidden_words = os.getenv("FORBIDDEN_WORDS").split(",")
 
         cleaned_data = super().clean()
-        body_text = cleaned_data["body_text"]
+        body_text = cleaned_data.get("body_text", "")
         for word in forbidden_words:
             if word.lower() in body_text.lower():
                 logger.warning(
@@ -100,7 +100,7 @@ class MessageForm(StyledFormMixin, forms.ModelForm):
                 raise forms.ValidationError(
                     "В поле 'Текст' запрещено использовать слово '%s'" % word
                 )
-        return cleaned_data
+        return body_text
 
 
 class MailingForm(StyledFormMixin, forms.ModelForm):
@@ -128,4 +128,4 @@ class MailingForm(StyledFormMixin, forms.ModelForm):
             )
         return cleaned_data
 
-    # Нет необходимости проверять на чистоту получателей и сообщений, так как они проверяются в соответствующих формах.
+    # Здесь нет необходимости проверять на чистоту получателей и сообщений, так как они проверяются в соответствующих формах.
