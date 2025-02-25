@@ -9,16 +9,14 @@ from django.views.generic import (
     TemplateView,
 )
 
-from .forms import RecipientForm, MessageForm, MailingForm
+from .forms import RecipientForm, MessageForm, MailingForm, SendAttemptForm
 from .models import Recipient, Message, Mailing, SendAttempt
 
 # Настройка логгера
 logger = logging.getLogger("[postpilot")
 logger.setLevel(logging.DEBUG)
 handler = logging.FileHandler("postpilot/logs/reports.log", "a", "utf-8")
-handler.setFormatter(
-    logging.Formatter("%(asctime)s - %(name)s - %(levelname)s: %(message)s")
-)
+handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s: %(message)s"))
 logger.addHandler(handler)
 
 
@@ -42,9 +40,7 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["mailings"] = Mailing.objects.all()  # Все рассылки
-        context["mailings_started"] = Mailing.objects.filter(
-            status="started"
-        )  # Только активные рассылки
+        context["mailings_started"] = Mailing.objects.filter(status="started")  # Только активные рассылки
         context["recipients"] = Recipient.objects.all()  # Получатели
         return context
 
@@ -97,8 +93,7 @@ class RecipientUpdateView(UpdateView):
         """Дополнительная обработка перед сохранением формы."""
         self.object = form.save()  # Сохраняем объект формы в базу
         logger.info(
-            "Получатель рассылки успешно обновлен. Имя: '%s'. Email: '%s'"
-            % (self.object.full_name, self.object.email)
+            "Получатель рассылки успешно обновлен. Имя: '%s'. Email: '%s'" % (self.object.full_name, self.object.email)
         )
         return super().form_valid(form)
 
@@ -146,8 +141,7 @@ class MessageCreateView(CreateView):
         """Дополнительная обработка перед сохранением формы."""
         self.object = form.save()  # Сохраняем объект формы в базу
         logger.info(
-            "Сообщение успешно создано. Тема: '%s'. Текст: '%s'"
-            % (self.object.subject, self.object.body_text)
+            "Сообщение успешно создано. Тема: '%s'. Текст: '%s'" % (self.object.subject, self.object.body_text)
         )
         return super().form_valid(form)
 
@@ -180,8 +174,7 @@ class MessageUpdateView(UpdateView):
         """Дополнительная обработка перед сохранением формы."""
         self.object = form.save()  # Сохраняем объект формы в базу
         logger.info(
-            "Сообщение успешно обновлено. Тема: '%s'. Текст: '%s'"
-            % (self.object.subject, self.object.body_text)
+            "Сообщение успешно обновлено. Тема: '%s'. Текст: '%s'" % (self.object.subject, self.object.body_text)
         )
         return super().form_valid(form)
 
@@ -208,10 +201,7 @@ class MessageDeleteView(DeleteView):
     def delete(self, request, *args, **kwargs):
         """Переопределение метода delete для логирования."""
         message = self.get_object()
-        logger.info(
-            "Сообщение успешно удалено. Тема: '%s'. Текст: '%s'"
-            % (message.subject, message.body_text)
-        )
+        logger.info("Сообщение успешно удалено. Тема: '%s'. Текст: '%s'" % (message.subject, message.body_text))
         return super().delete(request, *args, **kwargs)
 
 
@@ -254,7 +244,7 @@ class MailingListView(ListView):
         Добавляем переменную в контекст для отображения количества рассылок со статусом "started".
         """
         context = super().get_context_data(**kwargs)
-        # context["started_count"] = sum(1 for mailing in self.object_list if mailing.status == "started")  #
+        # context["started_count"] = sum(1 for mailing in self.object_list if mailing.status == "started")  # Можно сразу передать  в контекст количество активных рассылок
         context["mailings_started"] = Mailing.objects.filter(status="started")
         return context
 
@@ -301,8 +291,7 @@ class MailingDeleteView(DeleteView):
         """Переопределение метода delete для логирования."""
         mailing = self.get_object()
         logger.info(
-            "Рассылка успешно удалена. Статус рассылки: '%s'. Сообщение: '%s'"
-            % (mailing.status, mailing.message)
+            "Рассылка успешно удалена. Статус рассылки: '%s'. Сообщение: '%s'" % (mailing.status, mailing.message)
         )
         return super().delete(request, *args, **kwargs)
 
@@ -318,11 +307,7 @@ class SendAttemptListView(ListView):
     success_url = reverse_lazy("postpilot:home")
 
 
-class SendAttemptForm:
-    pass
-
-
-class CreateSendAttemptView(CreateView):
+class SendAttemptCreateView(CreateView):
     """
     View для создания попытки рассылки.
     """
@@ -330,3 +315,14 @@ class CreateSendAttemptView(CreateView):
     model = SendAttempt
     form_class = SendAttemptForm
     success_url = reverse_lazy("home")
+
+    def form_valid(self, form):
+        """Дополнительная обработка перед сохранением формы."""
+        self.object = form.save()  # Сохраняем объект формы в базу
+        logger.info("Попытка рассылки успешно создана.")
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        """Обработка в случае неверной формы."""
+        logger.warning("Ошибка при попытке рассылки: %s" % form.errors)
+        return super().form_invalid(form)

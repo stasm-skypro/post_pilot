@@ -4,7 +4,7 @@ import logging
 from django import forms
 
 from .mixins import StyledFormMixin
-from .models import Recipient, Message, Mailing
+from .models import Recipient, Message, Mailing, SendAttempt
 from dotenv import load_dotenv
 
 load_dotenv(override=True)
@@ -129,3 +129,19 @@ class MailingForm(StyledFormMixin, forms.ModelForm):
         return cleaned_data
 
     # Здесь нет необходимости проверять на чистоту получателей и сообщений, так как они проверяются в соответствующих формах.
+
+
+class SendAttemptForm(StyledFormMixin, forms.ModelForm):
+    """
+    Форма попытки отправки рассылки.
+    """
+
+    class Meta:
+        model = SendAttempt
+        fields = "__all__"
+        labels = {
+            "attempt_at": "Дата и время попытки",
+            "status": "Статус",
+            "response": "Ответ сервера",
+            "mailing": "Рассылка",
+        }
