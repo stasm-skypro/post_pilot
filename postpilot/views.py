@@ -17,7 +17,7 @@ from .models import Recipient, Message, Mailing, SendAttempt
 from .services import send_mailing
 
 # Настройка логгера
-logger = logging.getLogger("[postpilot")
+logger = logging.getLogger("postpilot")
 logger.setLevel(logging.DEBUG)
 handler = logging.FileHandler("postpilot/logs/reports.log", "a", "utf-8")
 handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s: %(message)s"))
@@ -336,8 +336,50 @@ class SendAttemptView(View):
         try:
             print("Вызов сервисной функции")
             send_mailing(mailing)  # Вызов сервисной функции
-            messages.success(request, f"Рассылка '{mailing}' успешно отправлена!")
+            messages.success(request, "Рассылка '%s' успешно отправлена!" % mailing)
         except Exception as e:
-            messages.error(request, f"Ошибка при отправке рассылки: {e}")
+            messages.error(request, "Ошибка при отправке рассылки: %s" % e)
 
         return redirect("postpilot:mailing_list")
+
+
+class SendAttemptUpdateView(UpdateView):
+    """
+    View для редактирования попытки рассылки.
+    """
+
+    model = SendAttempt
+    form_class = SendAttemptForm
+    success_url = reverse_lazy("postpilot:mailing_list")
+
+    def form_valid(self, form):
+        """Дополнительная обработка перед сохранением формы."""
+        self.object = form.save()  # Сохраняем объект формы в базу
+        logger.info("Попытка рассылки успешно обновлена.")
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        """Обработка в случае неверной формы."""
+        logger.warning("Ошибка при обновлении попытки рассылки: %s" % form.errors)
+        return super().form_invalid(form)
+
+
+class SendAttemptDeleteView(DeleteView):
+    """
+    View для удаления попытки рассылки.
+    """
+
+    model = SendAttempt
+    form_class = SendAttemptForm
+    success_url = reverse_lazy("postpilot:mailing_list")
+
+    def post(self, request, *args, **kwargs):
+        """Переопределение метода POST для вызова delete."""
+        logger.info("Удаление попытки рассылки через POST-запрос.")
+        return self.delete(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        """Переопределение метода delete для логирования."""
+        send_attempt = self.get_object()
+        logger.info("Попытка рассылки успешно удалена. Статус: '%s'" % send_attempt.status)
+        return super().delete(request, *args, **kwargs)

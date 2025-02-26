@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 from .models import Mailing
 
 # Настройка логгера
-logger = logging.getLogger("[postpilot")
+logger = logging.getLogger("postpilot")
 logger.setLevel(logging.DEBUG)
 handler = logging.FileHandler("postpilot/logs/reports.log", "a", "utf-8")
 handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s: %(message)s"))
@@ -56,7 +56,7 @@ def send_mailing(mailing: Mailing):
         logger.info("Рассылка %s успешно отправлена." % mailing.id)
 
     except Exception as e:
-        mailing.status = "created"  # Возвращаем в исходное состояние
+        mailing.status = "broken"  # Переводим в состояние "broken connection"
         mailing.save(update_fields=["status"])
         logger.error("Ошибка при отправке рассылки %s: %s" % (mailing.id, e))
         raise
