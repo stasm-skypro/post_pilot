@@ -44,6 +44,7 @@ class Mailing(models.Model):
         ("completed", "Completed"),
         ("created", "Created"),
         ("started", "Started"),
+        ("broken", "Broken"),
     ]
 
     first_sent_at = models.DateTimeField("Дата первой отправки", blank=True, null=True)

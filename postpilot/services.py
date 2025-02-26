@@ -3,47 +3,60 @@
 """
 
 import logging
+import os
 
-from django.conf import settings
 from django.core.mail import send_mail
+from django.utils.timezone import now
+from dotenv import load_dotenv
 
-from .models import Mailing, Recipient, SendAttempt
+from .models import Mailing
 
-logger = logging.getLogger("postpilot")
+# Настройка логгера
+logger = logging.getLogger("[postpilot")
+logger.setLevel(logging.DEBUG)
+handler = logging.FileHandler("postpilot/logs/reports.log", "a", "utf-8")
+handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s: %(message)s"))
+logger.addHandler(handler)
 
 
-def send_mailing(mailing_id):
+load_dotenv(override=True)
+
+
+def send_mailing(mailing: Mailing):
     """
     Отправляет письма всем получателям указанной рассылки.
+    Обновляет статус рассылки на "started" перед отправкой и "completed" после завершения.
     """
+    print("mailing", mailing.__dict__)
+    mailing.status = "started"
+    mailing.first_sent_at = now()
+    mailing.save(update_fields=["status", "first_sent_at"])
+    print("mailing", mailing.__dict__)
+
+    recipients = mailing.recipients.all()
+    recipient_list = [recipient.email for recipient in recipients]
+    print("recipient_list", recipient_list)
+
+    if not recipient_list:
+        logger.warning(f"Рассылка {mailing.id} не имеет получателей!")
+        return
+
     try:
-        mailing = Mailing.objects.get(id=mailing_id)
-        recipients = Recipient.objects.all()
-        subject = mailing.message.subject
-        message = mailing.message.body_text
-        from_email = settings.DEFAULT_FROM_EMAIL
-
-        if not recipients.exists():
-            logger.warning("Попытка отправки рассылки без получателей. ID рассылки: %s", mailing_id)
-            return False
-
-        recipient_list = [recipient.email for recipient in recipients]
-
-        sent_count = send_mail(subject, message, from_email, recipient_list)
-
-        # Записываем попытку отправки
-        SendAttempt.objects.create(
-            mailing=mailing,
-            status="success" if sent_count > 0 else "failed",
-            details=f"Отправлено {sent_count} писем.",
+        send_mail(
+            subject=mailing.message.subject,
+            message=mailing.message.body_text,
+            from_email=os.getenv("EMAIL_HOST_USER"),
+            recipient_list=recipient_list,
+            fail_silently=False,  # Если ошибка, Django вызовет исключение
         )
 
-        logger.info("Рассылка успешно отправлена. ID рассылки: %s, отправлено писем: %s", mailing_id, sent_count)
-        return sent_count > 0
+        mailing.status = "completed"
+        mailing.sent_completed_at = now()
+        mailing.save(update_fields=["status", "sent_completed_at"])
+        logger.info("Рассылка %s успешно отправлена." % mailing.id)
 
-    except Mailing.DoesNotExist:
-        logger.error("Рассылка с ID %s не найдена", mailing_id)
-        return False
     except Exception as e:
-        logger.error("Ошибка при отправке рассылки: %s", str(e))
-        return False
+        mailing.status = "created"  # Возвращаем в исходное состояние
+        mailing.save(update_fields=["status"])
+        logger.error("Ошибка при отправке рассылки %s: %s" % (mailing.id, e))
+        raise

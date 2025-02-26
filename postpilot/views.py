@@ -1,6 +1,9 @@
 import logging
 
+from django.contrib import messages
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import (
     CreateView,
     ListView,
@@ -11,6 +14,7 @@ from django.views.generic import (
 
 from .forms import RecipientForm, MessageForm, MailingForm, SendAttemptForm
 from .models import Recipient, Message, Mailing, SendAttempt
+from .services import send_mailing
 
 # Настройка логгера
 logger = logging.getLogger("[postpilot")
@@ -297,16 +301,6 @@ class MailingDeleteView(DeleteView):
 
 
 # -- SendAttempt views --
-class SendAttemptListView(ListView):
-    """
-    View для отображения списка попыток отправки.
-    """
-
-    model = Mailing
-    context_object_name = "send_attempts"
-    success_url = reverse_lazy("postpilot:home")
-
-
 class SendAttemptCreateView(CreateView):
     """
     View для создания попытки рассылки.
@@ -314,7 +308,7 @@ class SendAttemptCreateView(CreateView):
 
     model = SendAttempt
     form_class = SendAttemptForm
-    success_url = reverse_lazy("home")
+    success_url = reverse_lazy("postpilot:mailing_list")
 
     def form_valid(self, form):
         """Дополнительная обработка перед сохранением формы."""
@@ -326,3 +320,24 @@ class SendAttemptCreateView(CreateView):
         """Обработка в случае неверной формы."""
         logger.warning("Ошибка при попытке рассылки: %s" % form.errors)
         return super().form_invalid(form)
+
+
+class SendAttemptView(View):
+    """
+    View для запуска попытки рассылки.
+    """
+
+    def post(self, request, pk):
+        """
+        Переопределение метода POST для запуска попытки рассылки.
+        """
+        mailing = get_object_or_404(Mailing, pk=pk)
+
+        try:
+            print("Вызов сервисной функции")
+            send_mailing(mailing)  # Вызов сервисной функции
+            messages.success(request, f"Рассылка '{mailing}' успешно отправлена!")
+        except Exception as e:
+            messages.error(request, f"Ошибка при отправке рассылки: {e}")
+
+        return redirect("postpilot:mailing_list")

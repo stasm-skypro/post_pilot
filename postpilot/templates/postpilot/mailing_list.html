@@ -30,15 +30,32 @@
                 {% for mailing in mailings %}
                 <li class="list-group-item">
                   <div class="row">
-                    <div class="col-5 text-start"><strong>{{ mailing.message }}</strong></div>
+                    <div class="col-3 text-start"><strong>{{ mailing.message }}</strong></div>
                     <div class="col-1">
                       {% if mailing.status == 'started' %}
-                        <img src="/media/postpilot/train.gif" alt="Идет рассылка">
+                      <img src="/media/postpilot/train.gif" alt="Идет рассылка">
                       {% endif %}
                     </div>
                     <div class="col-2 text-end text-muted">{{ mailing.get_status_display }}</div>
-                    <div class="col-2"><a class="btn btn-primary w-100" href="{% url 'postpilot:mailing_update' mailing.id %}" role="button">Редактировать</a></div>
-                    <div class="col-2"><a class="btn btn-danger w-100" href="{% url 'postpilot:mailing_delete' mailing.id %}" role="button">Удалить</a></div>
+                    <div class="col-2"><a class="btn btn-outline-primary w-100 btn-sm"
+                                          href="{% url 'postpilot:mailing_update' mailing.id %}" role="button">Редактировать</a>
+                    </div>
+                    <div class="col-2"><a class="btn btn-outline-danger w-100 btn-sm"
+                                          href="{% url 'postpilot:mailing_delete' mailing.id %}"
+                                          role="button">Удалить</a></div>
+                    <div class="col-2">
+                      <form action="{% url 'postpilot:sendattempt' mailing.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit"
+                                class="btn btn-outline-primary w-100 btn-sm {% if mailing.status == 'started' %} disabled {% endif %}">
+                          {% if mailing.status == "started" %}
+                          Отправка...
+                          {% else %}
+                          Отправить
+                          {% endif %}
+                        </button>
+                      </form>
+                    </div>
                   </div>
                 </li>
                 {% endfor %}
