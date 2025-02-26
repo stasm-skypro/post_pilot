@@ -6,11 +6,11 @@ class Recipient(models.Model):
     """Класс получателя рассылки. Модель 'Получатель рассылки'."""
 
     email = models.EmailField("Email", unique=True)
-    full_name = models.CharField("ФИО", max_length=255, blank=True)
+    full_name = models.CharField("ФИО", max_length=255, blank=True, null=True)
     comments = models.TextField("Комментарии", blank=True)
 
     def __str__(self):
-        return "%s %s" % (self.email, self.full_name)
+        return f"{self.email} {self.full_name}"
 
     class Meta:
         db_table = "recipients"
@@ -27,7 +27,8 @@ class Message(models.Model):
     created_at = models.DateTimeField("Дата создания", auto_now_add=True)  # Поле добавлено мной
 
     def __str__(self):
-        return "%s" % self.subject
+        """Сокращает subject, чтобы избежать длинных заголовков"""
+        return self.subject[50:]
 
     class Meta:
         db_table = "messages"
@@ -41,14 +42,16 @@ class Mailing(models.Model):
     """Класс рассылки. Модель 'Рассылка'."""
 
     STATUS_CHOICES = [
-        ("completed", "Completed"),
-        ("created", "Created"),
-        ("started", "Started"),
-        ("broken", "Broken"),
+        ("completed", "Завершено"),
+        ("created", "Создано"),
+        ("started", "Начато"),
+        ("broken", "Прервано"),
     ]
 
     first_sent_at = models.DateTimeField("Дата первой отправки", blank=True, null=True)
-    sent_completed_at = models.DateTimeField("Дата завершения отправки", blank=True, null=True)
+    sent_completed_at = models.DateTimeField(
+        "Дата завершения отправки", blank=True, null=True, auto_now=True
+    )  # Используем auto_now=True в sent_completed_at, т.к. поле всегда обновляется при завершении
     status = models.CharField("Статус отправки", max_length=9, default="created", choices=STATUS_CHOICES)
     message = models.ForeignKey(Message, on_delete=models.CASCADE, verbose_name="Сообщение")
     recipients = models.ManyToManyField(Recipient, verbose_name="Получатели")
@@ -74,7 +77,7 @@ class SendAttempt(models.Model):
     ]
 
     attempt_at = models.DateTimeField("Дата и время попытки отправки", auto_now_add=True)
-    status = models.CharField("Статус отправки", max_length=12, default=False, choices=STATUS_CHOICES)
+    status = models.CharField("Статус отправки", max_length=12, choices=STATUS_CHOICES, default="failed")
     response = models.TextField("Ответ сервера", blank=True)
     mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE, verbose_name="Рассылка")
 
