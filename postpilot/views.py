@@ -16,12 +16,7 @@ from .forms import RecipientForm, MessageForm, MailingForm, SendAttemptForm
 from .models import Recipient, Message, Mailing, SendAttempt
 from .services import send_mailing
 
-# Настройка логгера
-logger = logging.getLogger("postpilot")
-logger.setLevel(logging.DEBUG)
-handler = logging.FileHandler("postpilot/logs/reports.log", "a", "utf-8")
-handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s: %(message)s"))
-logger.addHandler(handler)
+logger = logging.getLogger(__name__)
 
 
 # -- Welcome view --
@@ -63,14 +58,13 @@ class RecipientCreateView(CreateView):
         """Дополнительная обработка перед сохранением формы."""
         self.object = form.save()  # Сохраняем объект формы в базу
         logger.info(
-            "Получатель рассылки успешно создан. Имя получателя: '%s'. Email: '%s'"
-            % (self.object.full_name, self.object.email)
+            f"Получатель рассылки успешно создан. Имя получателя: '{self.object.full_name}'. Email: '{self.object.email}'"
         )
         return super().form_valid(form)
 
     def form_invalid(self, form):
         """Обработка в случае неверной формы."""
-        logger.warning("Ошибка при создании получателя рассылки: %s" % form.errors)
+        logger.warning("Ошибка при создании получателя рассылки: {form.errors}")
         return super().form_invalid(form)
 
 
@@ -97,13 +91,13 @@ class RecipientUpdateView(UpdateView):
         """Дополнительная обработка перед сохранением формы."""
         self.object = form.save()  # Сохраняем объект формы в базу
         logger.info(
-            "Получатель рассылки успешно обновлен. Имя: '%s'. Email: '%s'" % (self.object.full_name, self.object.email)
+            "Получатель рассылки успешно обновлен. Имя: '{self.object.full_name}'. Email: '{self.object.email}'"
         )
         return super().form_valid(form)
 
     def form_invalid(self, form):
         """Обработка в случае неверной формы."""
-        logger.warning("Ошибка при обновлении получателя рассылки: %s" % form.errors)
+        logger.warning(f"Ошибка при обновлении получателя рассылки: {form.errors}")
         return super().form_invalid(form)
 
 
@@ -125,8 +119,7 @@ class RecipientDeleteView(DeleteView):
         """Переопределение метода delete для логирования."""
         recipient = self.get_object()
         logger.info(
-            "Получатель рассылки успешно удалён. Имя получателя: '%s'. Email: '%s'"
-            % (recipient.full_name, recipient.email)
+            f"Получатель рассылки успешно удалён. Имя получателя: '{recipient.full_name}'. Email: '{recipient.email}'"
         )
         return super().delete(request, *args, **kwargs)
 
@@ -144,14 +137,12 @@ class MessageCreateView(CreateView):
     def form_valid(self, form):
         """Дополнительная обработка перед сохранением формы."""
         self.object = form.save()  # Сохраняем объект формы в базу
-        logger.info(
-            "Сообщение успешно создано. Тема: '%s'. Текст: '%s'" % (self.object.subject, self.object.body_text)
-        )
+        logger.info(f"Сообщение успешно создано. Тема: '{self.object.subject}'. Текст: '{self.object.body_text}'")
         return super().form_valid(form)
 
     def form_invalid(self, form):
         """Обработка в случае неверной формы."""
-        logger.warning("Ошибка при создании сообщения: %s" % form.errors)
+        logger.warning(f"Ошибка при создании сообщения: {form.errors}")
         return super().form_invalid(form)
 
 
@@ -177,14 +168,12 @@ class MessageUpdateView(UpdateView):
     def form_valid(self, form):
         """Дополнительная обработка перед сохранением формы."""
         self.object = form.save()  # Сохраняем объект формы в базу
-        logger.info(
-            "Сообщение успешно обновлено. Тема: '%s'. Текст: '%s'" % (self.object.subject, self.object.body_text)
-        )
+        logger.info(f"Сообщение успешно обновлено. Тема: '{self.object.subject}'. Текст: '{self.object.body_text}'")
         return super().form_valid(form)
 
     def form_invalid(self, form):
         """Обработка в случае неверной формы."""
-        logger.warning("Ошибка при обновлении сообщения: %s" % form.errors)
+        logger.warning(f"Ошибка при обновлении сообщения: {form.errors}")
         return super().form_invalid(form)
 
 
@@ -205,7 +194,7 @@ class MessageDeleteView(DeleteView):
     def delete(self, request, *args, **kwargs):
         """Переопределение метода delete для логирования."""
         message = self.get_object()
-        logger.info("Сообщение успешно удалено. Тема: '%s'. Текст: '%s'" % (message.subject, message.body_text))
+        logger.info(f"Сообщение успешно удалено. Тема: '{message.subject}'. Текст: '{message.body_text}'")
         return super().delete(request, *args, **kwargs)
 
 
@@ -223,14 +212,13 @@ class MailingCreateView(CreateView):
         """Дополнительная обработка перед сохранением формы."""
         self.object = form.save()  # Сохраняем объект формы в базу
         logger.info(
-            "Рассылка успешно создана. Статус рассылки: '%s'. Сообщение: '%s'"
-            % (self.object.status, self.object.message)
+            f"Рассылка успешно создана. Статус рассылки: '{self.object.status}'. Сообщение: '{self.object.message}'"
         )
         return super().form_valid(form)
 
     def form_invalid(self, form):
         """Обработка в случае неверной формы."""
-        logger.warning("Ошибка при создании рассылки: %s" % form.errors)
+        logger.warning(f"Ошибка при создании рассылки: {form.errors}")
         return super().form_invalid(form)
 
 
@@ -266,14 +254,13 @@ class MailingUpdateView(UpdateView):
         """Дополнительная обработка перед сохранением формы."""
         self.object = form.save()  # Сохраняем объект формы в базу
         logger.info(
-            "Рассылка успешно обновлена. Статус рассылки: '%s'. Сообщение: '%s'"
-            % (self.object.status, self.object.message)
+            f"Рассылка успешно обновлена. Статус рассылки: '{self.object.status}'. Сообщение: '{self.object.message}'"
         )
         return super().form_valid(form)
 
     def form_invalid(self, form):
         """Обработка в случае неверной формы."""
-        logger.warning("Ошибка при обновлении рассылки: %s" % form.errors)
+        logger.warning(f"Ошибка при обновлении рассылки: {form.errors}")
         return super().form_invalid(form)
 
 
@@ -294,9 +281,7 @@ class MailingDeleteView(DeleteView):
     def delete(self, request, *args, **kwargs):
         """Переопределение метода delete для логирования."""
         mailing = self.get_object()
-        logger.info(
-            "Рассылка успешно удалена. Статус рассылки: '%s'. Сообщение: '%s'" % (mailing.status, mailing.message)
-        )
+        logger.info(f"Рассылка успешно удалена. Статус рассылки: '{mailing.status}'. Сообщение: '{mailing.message}'")
         return super().delete(request, *args, **kwargs)
 
 
@@ -318,7 +303,7 @@ class SendAttemptCreateView(CreateView):
 
     def form_invalid(self, form):
         """Обработка в случае неверной формы."""
-        logger.warning("Ошибка при попытке рассылки: %s" % form.errors)
+        logger.warning(f"Ошибка при попытке рассылки: {form.errors}")
         return super().form_invalid(form)
 
 
@@ -334,11 +319,10 @@ class SendAttemptView(View):
         mailing = get_object_or_404(Mailing, pk=pk)
 
         try:
-            print("Вызов сервисной функции")
             send_mailing(mailing)  # Вызов сервисной функции
-            messages.success(request, "Рассылка '%s' успешно отправлена!" % mailing)
+            messages.success(request, f"Рассылка '{mailing}' успешно отправлена!")
         except Exception as e:
-            messages.error(request, "Ошибка при отправке рассылки: %s" % e)
+            messages.error(request, f"Ошибка при отправке рассылки: {e}")
 
         return redirect("postpilot:mailing_list")
 
@@ -360,7 +344,7 @@ class SendAttemptUpdateView(UpdateView):
 
     def form_invalid(self, form):
         """Обработка в случае неверной формы."""
-        logger.warning("Ошибка при обновлении попытки рассылки: %s" % form.errors)
+        logger.warning(f"Ошибка при обновлении попытки рассылки: {form.errors}")
         return super().form_invalid(form)
 
 
@@ -381,5 +365,5 @@ class SendAttemptDeleteView(DeleteView):
     def delete(self, request, *args, **kwargs):
         """Переопределение метода delete для логирования."""
         send_attempt = self.get_object()
-        logger.info("Попытка рассылки успешно удалена. Статус: '%s'" % send_attempt.status)
+        logger.info(f"Попытка рассылки успешно удалена. Статус: '{send_attempt.status}'")
         return super().delete(request, *args, **kwargs)

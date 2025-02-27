@@ -28,7 +28,7 @@ class Message(models.Model):
 
     def __str__(self):
         """Сокращает subject, чтобы избежать длинных заголовков"""
-        return self.subject[50:]
+        return self.subject[:30]
 
     class Meta:
         db_table = "messages"
@@ -57,7 +57,7 @@ class Mailing(models.Model):
     recipients = models.ManyToManyField(Recipient, verbose_name="Получатели")
 
     def __str__(self):
-        result = "%s" % self.message
+        result = f"{self.message}"
         return result[:30]
 
     class Meta:
@@ -82,7 +82,7 @@ class SendAttempt(models.Model):
     mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE, verbose_name="Рассылка")
 
     def __str__(self):
-        result = "%s" % self.response
+        result = f"{self.response}"
         return result[:30]
 
     class Meta:

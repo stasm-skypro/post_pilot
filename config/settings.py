@@ -125,3 +125,32 @@ EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS")
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
+
+
+# Настройка логера
+LOG_DIR = os.path.join(BASE_DIR, "postpilot/logs")
+os.makedirs(LOG_DIR, exist_ok=True)  # Создаём папку для логов, если её нет
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {"format": "%(asctime)s - %(name)s - %(levelname)s: %(message)s"},
+    },
+    "handlers": {
+        "file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": os.path.join(LOG_DIR, "reports.log"),
+            "encoding": "utf-8",
+            "formatter": "verbose",
+        },
+    },
+    "loggers": {
+        "postpilot": {
+            "handlers": ["file"],
+            "level": "DEBUG",
+            "propagate": False,  #  Не будем передавать лог root-логерам, т.к. это не предусмотрено ТЗ
+        },
+    },
+}
