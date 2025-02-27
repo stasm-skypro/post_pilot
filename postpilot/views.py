@@ -37,6 +37,7 @@ class HomeView(TemplateView):
     template_name = "home.html"
 
     def get_context_data(self, **kwargs):
+        """Добавляем переменную в контекст для отображения количества рассылок со статусом "started"."""
         context = super().get_context_data(**kwargs)
         context["mailings"] = Mailing.objects.all()  # Все рассылки
         context["mailings_started"] = Mailing.objects.filter(status="started")  # Только активные рассылки

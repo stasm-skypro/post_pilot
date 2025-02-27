@@ -10,9 +10,13 @@ class Recipient(models.Model):
     comments = models.TextField("Комментарии", blank=True)
 
     def __str__(self):
+        """Возвращает строковое представление объекта 'Получатель рассылки'."""
         return f"{self.email} {self.full_name}"
 
     class Meta:
+        """
+        Класс метаданных 'Получатель рассылки'.
+        """
         db_table = "recipients"
         verbose_name = "Получатель"
         verbose_name_plural = "Получатели"
@@ -27,10 +31,13 @@ class Message(models.Model):
     created_at = models.DateTimeField("Дата создания", auto_now_add=True)  # Поле добавлено мной
 
     def __str__(self):
-        """Сокращает subject, чтобы избежать длинных заголовков"""
+        """Возвращает строковое представление объекта 'Сообщение'."""
         return self.subject[:30]
 
     class Meta:
+        """
+        Класс метаданных 'Сообщение'.
+        """
         db_table = "messages"
         verbose_name = "Сообщение"
         verbose_name_plural = "Сообщения"
@@ -57,10 +64,14 @@ class Mailing(models.Model):
     recipients = models.ManyToManyField(Recipient, verbose_name="Получатели")
 
     def __str__(self):
+        """Возвращает строковое представление объекта 'Рассылка'."""
         result = f"{self.message}"
         return result[:30]
 
     class Meta:
+        """
+        Класс метаданных 'Рассылка'.
+        """
         db_table = "mailings"
         verbose_name = "Рассылка"
         verbose_name_plural = "Рассылки"
@@ -82,10 +93,14 @@ class SendAttempt(models.Model):
     mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE, verbose_name="Рассылка")
 
     def __str__(self):
+        """Возвращает строковое представление объекта 'Попытка рассылки'."""
         result = f"{self.response}"
         return result[:30]
 
     class Meta:
+        """
+        Класс метаданных 'Попытка рассылки'.
+        """
         db_table = "send_attempts"
         verbose_name = "Попытка отправки"
         verbose_name_plural = "Попытки отправки"
