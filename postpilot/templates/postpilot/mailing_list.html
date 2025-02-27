@@ -30,28 +30,35 @@
                 {% for mailing in mailings %}
                 <li class="list-group-item">
                   <div class="row">
-                    <div class="col-3 text-start"><strong>{{ mailing.message }}</strong></div>
-                    <div class="col-1">
+                    <div class="col-6 text-start"><strong>{{ mailing.message }}</strong></div>
+                    <div class="col-2">
                       {% if mailing.status == 'started' %}
                       <img src="/media/postpilot/train.gif" alt="Идет рассылка">
                       {% endif %}
                     </div>
-                    <div class="col-2 text-end text-muted">{{ mailing.get_status_display }}</div>
-                    <div class="col-2"><a class="btn btn-outline-primary w-100 btn-sm"
-                                          href="{% url 'postpilot:mailing_update' mailing.id %}" role="button">Редактировать</a>
+                    <div class="col-1 text-end text-muted" style="font-size: 80%">{{ mailing.get_status_display }}
                     </div>
-                    <div class="col-2"><a class="btn btn-outline-danger w-100 btn-sm"
+                    <div class="col-1"><a class="btn btn-outline-primary w-100 btn-sm"
+                                          href="{% url 'postpilot:mailing_update' mailing.id %}" role="button"
+                                          title="Редактировать">
+                      <img src="/media/postpilot/edit.png" alt="Редактировать" style="max-width: 30%">
+                    </a>
+                    </div>
+                    <div class="col-1"><a class="btn btn-outline-danger w-100 btn-sm"
                                           href="{% url 'postpilot:mailing_delete' mailing.id %}"
-                                          role="button">Удалить</a></div>
-                    <div class="col-2">
+                                          role="button"
+                                          title="Удалить">
+                      <img src="/media/postpilot/delete.png" alt="Удалить" style="max-width: 30%">
+                    </a></div>
+                    <div class="col-1">
                       <form action="{% url 'postpilot:sendattempt' mailing.id %}" method="post">
                         {% csrf_token %}
                         <button type="submit"
                                 class="btn btn-outline-primary w-100 btn-sm {% if mailing.status == 'started' %} disabled {% endif %}">
                           {% if mailing.status == "started" %}
-                          Отправка...
+                          <img src="/media/postpilot/start_disabled.png" alt="Отправить" style="max-width: 30%">
                           {% else %}
-                          Отправить
+                          <img src="/media/postpilot/start.png" alt="Отправить" style="max-width: 30%">
                           {% endif %}
                         </button>
                       </form>

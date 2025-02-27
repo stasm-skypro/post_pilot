@@ -269,8 +269,7 @@ def send_mailing(mailing: Mailing):
     except Exception as e:
         mailing.status = "broken"
         # logger.debug(f"Ошибка при отправке рассылки {mailing.id}: {e}")
-        logger.exception(f"Ошибка при отправке рассылки {mailing.id}: {e}")  # Пробовал использовать exception,
-                                                                            # тогда в лог спишется весь tryexception.
+        logger.exception(f"Ошибка при отправке рассылки {mailing.id}: {e}")
 
         SendAttempt.objects.create(
             mailing=mailing,
