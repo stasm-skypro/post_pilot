@@ -101,3 +101,26 @@ class CustomUserRegisterForm(UserCreationForm):
                 logger.warning("Формат файла изображения должен быть jpeg, jpg или png.")
                 raise ValidationError("Формат файла изображения должен быть jpeg, jpg или png.")
             return image
+
+
+class CustomUserUpdateForm(UserCreationForm):
+    """
+    Класс формы обновления пользователя.
+    """
+    
+    class Meta:
+        model = CustomUser
+        fields = '__all__'
+        exclude = ('password',)
+
+        labels = {
+            "username": "Имя пользователя",
+            "email": "Email",
+            "image": "Аватар",
+        }
+
+        help_texts = {
+            "username": "Введите имя пользователя",
+            "email": "Введите Email",
+            "image": "Загрузите аватар",
+        }
