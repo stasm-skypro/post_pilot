@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # Custom apps
     "postpilot",
+    "users",
 ]
 
 MIDDLEWARE = [
@@ -65,7 +66,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
-
 # Database
 DATABASES = {
     "default": {
@@ -77,7 +77,6 @@ DATABASES = {
         "PORT": os.getenv("DB_PORT"),
     }
 }
-
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -95,13 +94,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "Asia/Almaty"
 USE_I18N = True
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = "/static/"
@@ -110,12 +107,10 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-
 # Media files
 MEDIA_ROOT = BASE_DIR / "media"
 MEDIA_URL = "/media/"
 FILE_UPLOAD_MAX_MEMORY_SIZE = 5242880  # max 5 MB
-
 
 # Работа с почтой
 EMAIL_BACKEND = os.getenv("EMAIL_BACKEND")
@@ -125,7 +120,6 @@ EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS")
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
-
 
 # Настройка логера
 LOG_DIR = os.path.join(BASE_DIR, "postpilot/logs")
@@ -154,3 +148,6 @@ LOGGING = {
         },
     },
 }
+
+# Настройка модели пользователя
+AUTH_USER_MODEL = "users.CustomUser"
