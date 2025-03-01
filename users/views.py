@@ -70,16 +70,7 @@ class CustomUserLogoutView(LogoutView):
     """
     Представление для выхода пользователя.
     """
-    # TODO: Как обойтись без шаблона?
-    template_name = "users/logout.html"
-    context_object_name = "user"
-
-    def get_success_url(self):
-        """
-        Переопределение метода для перенаправления пользователя после успешного выхода.
-        """
-        logger.info(f"Пользователь {self.request.user.username} успешно вышел.")
-        return reverse_lazy("postpilot:mailing_list")
+    next_page = reverse_lazy("postpilot:mailing_list")  # Автоматическое перенаправление пользователя после выхода
 
 
 class CustomUserUpdateView(UpdateView):
