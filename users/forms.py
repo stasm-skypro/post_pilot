@@ -5,14 +5,17 @@ from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 from django.core.validators import EmailValidator
 
+from core.mixins import StyledFormMixin
 from users.models import CustomUser
 
 logger = logging.getLogger(__name__)
 
-class CustomUserRegisterForm(UserCreationForm):
+class CustomUserRegisterForm(StyledFormMixin, UserCreationForm):
     """
     Класс формы регистрации пользователя.
     """
+
+    usable_password = None
 
     class Meta:
         """
@@ -118,7 +121,7 @@ class CustomUserRegisterForm(UserCreationForm):
             return image
 
 
-class CustomUserUpdateForm(UserCreationForm):
+class CustomUserUpdateForm(StyledFormMixin, UserCreationForm):
     """
     Класс формы обновления пользователя.
     """

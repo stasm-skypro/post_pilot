@@ -1,11 +1,11 @@
+import logging
 import os
 
-import logging
 from django import forms
-
-from .mixins import StyledFormMixin
-from .models import Recipient, Message, Mailing, SendAttempt
 from dotenv import load_dotenv
+
+from core.mixins import StyledFormMixin
+from .models import Recipient, Message, Mailing, SendAttempt
 
 load_dotenv(override=True)
 

@@ -12,6 +12,7 @@ load_dotenv(override=True)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # Альтернативный способ получения путей
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -121,10 +122,11 @@ EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
 
-# Настройка логера
-LOG_DIR = os.path.join(BASE_DIR, "postpilot/logs")
-os.makedirs(LOG_DIR, exist_ok=True)  # Создаём папку для логов, если её нет
+# Создаём папки для логов, если их нет
+os.makedirs(os.path.join(BASE_DIR, "users/logs"), exist_ok=True)
+os.makedirs(os.path.join(BASE_DIR, "postpilot/logs"), exist_ok=True)
 
+# Настройка логгера
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -132,22 +134,43 @@ LOGGING = {
         "verbose": {"format": "%(asctime)s - %(name)s - %(levelname)s: %(message)s"},
     },
     "handlers": {
-        "file": {
+        "users_file": {
             "level": "DEBUG",
             "class": "logging.FileHandler",
-            "filename": os.path.join(LOG_DIR, "reports.log"),
+            "filename": os.path.join(BASE_DIR, "users/logs/reports.log"),
+            "encoding": "utf-8",
+            "formatter": "verbose",
+        },
+        "postpilot_file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": os.path.join(BASE_DIR, "postpilot/logs/reports.log"),
             "encoding": "utf-8",
             "formatter": "verbose",
         },
     },
     "loggers": {
-        "postpilot": {
-            "handlers": ["file"],
+        "users": {
+            "handlers": ["users_file"],
             "level": "DEBUG",
-            "propagate": False,  #  Не будем передавать лог root-логерам, т.к. это не предусмотрено ТЗ
+            "propagate": False,
+        },
+        "postpilot": {
+            "handlers": ["postpilot_file"],
+            "level": "DEBUG",
+            "propagate": False,
         },
     },
 }
 
 # Настройка модели пользователя
 AUTH_USER_MODEL = "users.CustomUser"
+
+# Редирект
+LOGIN_REDIRECT_URL = "postpilot:mailing_list"
+LOGOUT_REDIRECT_URL = "postpilot:mailing_list"
+
+# Настройка аутентификации (необходимо для того, чтобы пользователь после успешной регистрации автоматически входил в систему)
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+]
