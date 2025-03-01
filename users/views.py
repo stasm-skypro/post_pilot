@@ -4,7 +4,7 @@ from django.contrib.auth import login
 from django.contrib.auth.views import LoginView, LogoutView
 from django.core.mail import send_mail
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView
 
 from users.forms import CustomUserRegisterForm
 from users.models import CustomUser
@@ -19,7 +19,7 @@ class CustomUserRegisterView(CreateView):
 
     model = CustomUser
     form_class = CustomUserRegisterForm
-    template_name = "users/register.html"
+    template_name = "users/profile.html"
     success_url = reverse_lazy("postpilot:mailing_list")
 
     @staticmethod
@@ -36,7 +36,7 @@ class CustomUserRegisterView(CreateView):
 
     def form_valid(self, form):
         """
-        Переопределение метода для сохранения пользователя в базе данных, проверки статуса и отправки уведомления.
+        Переопределение метода для сохранения пользователя в базе данных и отправки уведомления.
         """
         user = form.save()
         login(self.request, user)  # Автоматически аутентифицирует пользователя сразу после успешной регистрации
@@ -80,3 +80,28 @@ class CustomUserLogoutView(LogoutView):
         """
         logger.info(f"Пользователь {self.request.user.username} успешно вышел.")
         return reverse_lazy("postpilot:mailing_list")
+
+
+class CustomUserUpdateView(UpdateView):
+    """
+    Представление для обновления данных пользователя.
+    """
+    model = CustomUser
+    form_class = CustomUserRegisterForm
+    template_name = "users/profile.html"
+    success_url = reverse_lazy("postpilot:mailing_list")
+
+    def form_valid(self, form):
+        """
+        Переопределение метода для сохранения пользователя в базе данных.
+        """
+        self.object = form.save()  # Сохраняем объект формы в базу
+        logger.info(f"Пользователь {self.object.username} успешно обновлен.")
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        """
+        Переопределение метода для обработки неверной формы обновления данных пользователя.
+        """
+        logger.error("Ошибка при обновлении данных пользователя: {form.errors}.")
+        return super().form_invalid(form)
