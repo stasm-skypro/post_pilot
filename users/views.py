@@ -1,7 +1,7 @@
 import logging
 
 from django.contrib.auth import login
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.core.mail import send_mail
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
@@ -63,4 +63,20 @@ class CustomUserLoginView(LoginView):
         Переопределение метода для перенаправления пользователя после успешной авторизации.
         """
         logger.info(f"Пользователь {self.request.user.username} успешно авторизован.")
+        return reverse_lazy("postpilot:mailing_list")
+
+
+class CustomUserLogoutView(LogoutView):
+    """
+    Представление для выхода пользователя.
+    """
+    # TODO: Как обойтись без шаблона?
+    template_name = "users/logout.html"
+    context_object_name = "user"
+
+    def get_success_url(self):
+        """
+        Переопределение метода для перенаправления пользователя после успешного выхода.
+        """
+        logger.info(f"Пользователь {self.request.user.username} успешно вышел.")
         return reverse_lazy("postpilot:mailing_list")
