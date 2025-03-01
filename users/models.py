@@ -52,7 +52,7 @@ class CustomUser(AbstractUser):
         upload_to="users/",
         verbose_name="Аватар",
         help_text="Загрузите аватар",
-        default="/users/default_avatar.jpg",
+        default="/users/users_default.webp",
         blank = True,
         null = True,
     )

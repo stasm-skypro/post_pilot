@@ -18,6 +18,21 @@ class CustomUserRegisterForm(UserCreationForm):
         """
         Класс метаданных: валидация полей.
         """
+        model = CustomUser
+        fields = ("username", "email", "password1", "password2")
+        labels = {
+            "username": "Имя пользователя",
+            "email": "Адрес электронной почты",
+            "password1": "Пароль",
+            "password2": "Подтверждение пароля",
+        }
+        help_texts = {
+            "username": "Введите имя пользователя",
+            "email": "Введите адрес электронной почты",
+            "password1": "Введите пароль",
+            "password2": "Подтвердите пароль",
+        }
+        
 
         def clean_username(self):
             """

@@ -15,6 +15,29 @@
           <a class="nav-link" href="{% url 'postpilot:message_list' %}">Сообщения</a>
           <a class="nav-link" href="{% url 'postpilot:recipient_list' %}">Уникальные получатели</a>
         </div>
+
+        <!-- Блок регистрации и входа -->
+        <div class="d-flex ms-auto">
+          {% if request.user.is_authenticated %}
+
+          <!-- Аватар пользователя (по умолчанию, если отсутствует) -->
+          {% if request.user.avatar %}
+          <img src="{{ request.user.avatar.url }}" alt="Avatar" class="rounded-circle"
+               style="width: 40px; height: 40px; margin-right: 10px;">
+          {% else %}
+          <img src="/media/users/users_default.webp" alt="Default Avatar" class="rounded-circle"
+               style="width: 40px; height: 40px; margin-right: 10px;">
+          {% endif %}
+
+          <!-- Кнопка выхода -->
+          <a class="btn btn-outline-danger me-2" href="{% url 'users:logout' %}">Выход</a>
+          {% else %}
+          <!-- Кнопки Регистрация и Вход -->
+          <a class="btn btn-outline-primary me-2" href="{% url 'users:profile' %}">Регистрация</a>
+          <a class="btn btn-outline-success" href="{% url 'users:login' %}">Вход</a>
+          {% endif %}
+        </div>
+
       </div>
     </div>
   </nav>
