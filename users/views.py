@@ -1,3 +1,50 @@
-from django.shortcuts import render
+import logging
 
-# Create your views here.
+from django.contrib.auth import login
+from django.core.mail import send_mail
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
+
+from users.forms import CustomUserRegisterForm
+from users.models import CustomUser
+
+logger = logging.getLogger(__name__)
+
+
+class CustomUserRegisterView(CreateView):
+    """
+    Представление для регистрации нового пользователя.
+    """
+
+    model = CustomUser
+    form_class = CustomUserRegisterForm
+    template_name = "users/register.html"
+    success_url = reverse_lazy("postpilot:mailing_list")
+
+    @staticmethod
+    def send_welcome_email(user_email):
+        """
+        Отправляет сообщение на email пользователя при успешной регистрации..
+        """
+        subject = "Добро пожаловать на сайт!"
+        message = "Спасибо за регистрацию! Мы рады видеть вас среди нас."
+        from_email = "stasm226@gmail.com"
+        recipients = [user_email]
+        send_mail(subject, message, from_email, recipients)
+        logger.info(f"Отправка электронного письма пользователю {user_email} после успешной регистрации")
+
+    def form_valid(self, form):
+        """
+        Переопределение метода для сохранения пользователя в базе данных.
+        """
+        user = form.save()
+        login(self.request, user)  # Автоматически аутентифицирует пользователя сразу после успешной регистрации
+        logger.info("Пользователь {user.username} успешно зарегистрирован")
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        """
+        Переопределение метода для обработки неверной формы регистрации.
+        """
+        logger.error("Ошибка при регистрации пользователя: {form.errors}")
+        return super().form_invalid(form)
