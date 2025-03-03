@@ -109,6 +109,7 @@ class CustomUserUpdateView(UpdateView):
         logger.error(f"Ошибка при обновлении данных пользователя: {form.errors}.")
         return super().form_invalid(form)
 
+
 # Функция для создания представления выхода пользователя (FBV).
 def custom_logout(request):
     """Функция для создания представления выхода пользователя."""

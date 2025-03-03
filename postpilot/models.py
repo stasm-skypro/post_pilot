@@ -8,6 +8,7 @@ class Recipient(models.Model):
     email = models.EmailField("Email", unique=True)
     full_name = models.CharField("ФИО", max_length=255, blank=True, null=True)
     comments = models.TextField("Комментарии", blank=True)
+    owner = models.ForeignKey("users.CustomUser", on_delete=models.CASCADE, verbose_name="Владелец", default=8)
 
     def __str__(self):
         """Возвращает строковое представление объекта 'Получатель рассылки'."""
@@ -29,6 +30,7 @@ class Message(models.Model):
     subject = models.CharField("Тема", max_length=100)
     body_text = models.TextField("Текст письма")
     created_at = models.DateTimeField("Дата создания", auto_now_add=True)  # Поле добавлено мной
+    owner = models.ForeignKey("users.CustomUser", on_delete=models.CASCADE, verbose_name="Владелец", default=8)
 
     def __str__(self):
         """Возвращает строковое представление объекта 'Сообщение'."""
@@ -62,6 +64,7 @@ class Mailing(models.Model):
     status = models.CharField("Статус отправки", max_length=9, default="created", choices=STATUS_CHOICES)
     message = models.ForeignKey(Message, on_delete=models.CASCADE, verbose_name="Сообщение")
     recipients = models.ManyToManyField(Recipient, verbose_name="Получатели")
+    owner = models.ForeignKey("users.CustomUser", on_delete=models.CASCADE, verbose_name="Владелец", default=8)
 
     def __str__(self):
         """Возвращает строковое представление объекта 'Рассылка'."""
@@ -91,6 +94,7 @@ class SendAttempt(models.Model):
     status = models.CharField("Статус отправки", max_length=12, choices=STATUS_CHOICES, default="failed")
     response = models.TextField("Ответ сервера", blank=True)
     mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE, verbose_name="Рассылка")
+    owner = models.ForeignKey("users.CustomUser", on_delete=models.CASCADE, verbose_name="Владелец", default=8)
 
     def __str__(self):
         """Возвращает строковое представление объекта 'Попытка рассылки'."""
