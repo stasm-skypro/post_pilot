@@ -4,8 +4,9 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.views import LoginView
 from django.core.mail import send_mail
 from django.shortcuts import redirect
-# from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_protect
 from django.views.generic import CreateView, UpdateView
 
 from users.forms import CustomUserRegisterForm
@@ -14,6 +15,7 @@ from users.models import CustomUser
 logger = logging.getLogger(__name__)
 
 
+@method_decorator(csrf_protect, name="dispatch")
 class CustomUserRegisterView(CreateView):
     """
     Представление для регистрации нового пользователя.

@@ -30,11 +30,11 @@
           {% endif %}
 
           <!-- Кнопка выхода -->
-          <a class="btn btn-outline-danger me-2" href="{% url 'users:logout' %}">Выход</a>
+          <a class="btn btn-light me-2" href="{% url 'users:logout' %}">Выход</a>
           {% else %}
           <!-- Кнопки Регистрация и Вход -->
-          <a class="btn btn-outline-primary me-2" href="{% url 'users:profile' %}">Регистрация</a>
-          <a class="btn btn-outline-success" href="{% url 'users:login' %}">Вход</a>
+          <a class="btn btn-light me-2" href="{% url 'users:profile' %}">Регистрация</a>
+          <a class="btn btn-light" href="{% url 'users:login' %}">Вход</a>
           {% endif %}
         </div>
 
