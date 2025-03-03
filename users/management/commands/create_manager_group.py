@@ -7,18 +7,35 @@ from users.models import CustomUser
 
 
 class Command(BaseCommand):
+    """
+    Создает группу Менеджеры с нужными правами.
+    Менеджеры должны обладать правами:
+    1. Просмотр всех клиентов и рассылок, сообщений и попыток рассылок.
+    2. Просмотр списка пользователей сервиса.
+    3. Блокировка пользователей сервиса (change + deactivate).
+    4. Отключение рассылок (change_mailing).
+    Django не предоставляет отдельного права deactivate, но можно контролировать это через change_customuser.
+    """
     help = "Создает группу Менеджеры с нужными правами"
 
     def handle(self, *args, **kwargs):
         managers_group, created = Group.objects.get_or_create(name="Менеджеры")
 
+        # Модели, к которым нужен доступ
         models = [Mailing, Recipient, Message, SendAttempt, CustomUser]
-        perms = ["view", "change"]  # Права просмотра и редактирования
 
+        # Список прав
+        perms = ["view", "change"]  # Просмотр и изменение
+
+        # Добавляем права к группе
         for model in models:
             content_type = ContentType.objects.get_for_model(model)
             for perm in perms:
-                permission = Permission.objects.get(codename=f"{perm}_{model._meta.model_name}", content_type=content_type)
-                managers_group.permissions.add(permission)
+                permission = Permission.objects.filter(
+                    codename=f"{perm}_{model._meta.model_name}",
+                    content_type=content_type
+                ).first()
+                if permission:
+                    managers_group.permissions.add(permission)
 
         self.stdout.write(self.style.SUCCESS("Группа 'Менеджеры' успешно создана!"))
