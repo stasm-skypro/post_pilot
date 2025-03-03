@@ -61,6 +61,8 @@ class RecipientCreateView(CreateView):
         logger.info(
             f"Получатель рассылки успешно создан. Имя получателя: '{self.object.full_name}'. Email: '{self.object.email}'"
         )
+        form.instance.owner = self.request.user  # Устанавливаем текущего пользователя владельцем
+        logger.info(f"Владелец рассылки - {self.request.user}")
         return super().form_valid(form)
 
     def form_invalid(self, form):
@@ -78,6 +80,10 @@ class RecipientListView(ListView):
     form_class = RecipientForm
     context_object_name = "recipients"
 
+    def get_queryset(self):
+        """Фильтрация списка получателей по владельцу."""
+        return super().get_queryset().filter(owner=self.request.user)
+
 
 class RecipientUpdateView(UpdateView):
     """
@@ -94,6 +100,7 @@ class RecipientUpdateView(UpdateView):
         logger.info(
             "Получатель рассылки успешно обновлен. Имя: '{self.object.full_name}'. Email: '{self.object.email}'"
         )
+        logger.info(f"Владелец рассылки - {self.request.user}")
         return super().form_valid(form)
 
     def form_invalid(self, form):
@@ -122,6 +129,7 @@ class RecipientDeleteView(DeleteView):
         logger.info(
             f"Получатель рассылки успешно удалён. Имя получателя: '{recipient.full_name}'. Email: '{recipient.email}'"
         )
+        logger.info(f"Владелец рассылки - {self.request.user}")
         return super().delete(request, *args, **kwargs)
 
 
@@ -139,6 +147,8 @@ class MessageCreateView(CreateView):
         """Дополнительная обработка перед сохранением формы."""
         self.object = form.save()  # Сохраняем объект формы в базу
         logger.info(f"Сообщение успешно создано. Тема: '{self.object.subject}'. Текст: '{self.object.body_text}'")
+        form.instance.owner = self.request.user  # Устанавливаем текущего пользователя владельцем
+        logger.info(f"Владелец рассылки - {self.request.user}")
         return super().form_valid(form)
 
     def form_invalid(self, form):
@@ -156,6 +166,10 @@ class MessageListView(ListView):
     form_class = MessageForm
     context_object_name = "messages"
 
+    def get_queryset(self):
+        """Фильтрация списка сообщений по владельцу."""
+        return super().get_queryset().filter(owner=self.request.user)
+
 
 class MessageUpdateView(UpdateView):
     """
@@ -170,6 +184,7 @@ class MessageUpdateView(UpdateView):
         """Дополнительная обработка перед сохранением формы."""
         self.object = form.save()  # Сохраняем объект формы в базу
         logger.info(f"Сообщение успешно обновлено. Тема: '{self.object.subject}'. Текст: '{self.object.body_text}'")
+        logger.info(f"Владелец рассылки - {self.request.user}")
         return super().form_valid(form)
 
     def form_invalid(self, form):
@@ -196,6 +211,7 @@ class MessageDeleteView(DeleteView):
         """Переопределение метода delete для логирования."""
         message = self.get_object()
         logger.info(f"Сообщение успешно удалено. Тема: '{message.subject}'. Текст: '{message.body_text}'")
+        logger.info(f"Владелец рассылки - {self.request.user}")
         return super().delete(request, *args, **kwargs)
 
 
@@ -215,6 +231,8 @@ class MailingCreateView(CreateView):
         logger.info(
             f"Рассылка успешно создана. Статус рассылки: '{self.object.status}'. Сообщение: '{self.object.message}'"
         )
+        form.instance.owner = self.request.user  # Устанавливаем текущего пользователя владельцем
+        logger.info(f"Владелец рассылки - {self.request.user}")
         return super().form_valid(form)
 
     def form_invalid(self, form):
@@ -241,6 +259,10 @@ class MailingListView(ListView):
         context["mailings_started"] = Mailing.objects.filter(status="started")
         return context
 
+    def get_queryset(self):
+        """Фильтрация списка рассылок по владельцу."""
+        return super().get_queryset().filter(owner=self.request.user)
+
 
 class MailingUpdateView(UpdateView):
     """
@@ -257,6 +279,7 @@ class MailingUpdateView(UpdateView):
         logger.info(
             f"Рассылка успешно обновлена. Статус рассылки: '{self.object.status}'. Сообщение: '{self.object.message}'"
         )
+        logger.info(f"Владелец рассылки - {self.request.user}")
         return super().form_valid(form)
 
     def form_invalid(self, form):
@@ -283,6 +306,7 @@ class MailingDeleteView(DeleteView):
         """Переопределение метода delete для логирования."""
         mailing = self.get_object()
         logger.info(f"Рассылка успешно удалена. Статус рассылки: '{mailing.status}'. Сообщение: '{mailing.message}'")
+        logger.info(f"Владелец рассылки - {self.request.user}")
         return super().delete(request, *args, **kwargs)
 
 
@@ -300,6 +324,8 @@ class SendAttemptCreateView(CreateView):
         """Дополнительная обработка перед сохранением формы."""
         self.object = form.save()  # Сохраняем объект формы в базу
         logger.info("Попытка рассылки успешно создана.")
+        form.instance.owner = self.request.user  # Устанавливаем текущего пользователя владельцем
+        logger.info(f"Владелец рассылки - {self.request.user}")
         return super().form_valid(form)
 
     def form_invalid(self, form):
@@ -341,6 +367,7 @@ class SendAttemptUpdateView(UpdateView):
         """Дополнительная обработка перед сохранением формы."""
         self.object = form.save()  # Сохраняем объект формы в базу
         logger.info("Попытка рассылки успешно обновлена.")
+        logger.info(f"Владелец рассылки - {self.request.user}")
         return super().form_valid(form)
 
     def form_invalid(self, form):
@@ -367,4 +394,5 @@ class SendAttemptDeleteView(DeleteView):
         """Переопределение метода delete для логирования."""
         send_attempt = self.get_object()
         logger.info(f"Попытка рассылки успешно удалена. Статус: '{send_attempt.status}'")
+        logger.info(f"Владелец рассылки - {self.request.user}")
         return super().delete(request, *args, **kwargs)
