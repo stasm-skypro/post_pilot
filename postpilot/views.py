@@ -12,6 +12,7 @@ from django.views.generic import (
     TemplateView,
 )
 
+from core.mixins import OwnerRequiredMixin, MenegerRequiredMixin
 from .forms import RecipientForm, MessageForm, MailingForm, SendAttemptForm
 from .models import Recipient, Message, Mailing, SendAttempt
 from .services import send_mailing
@@ -46,7 +47,7 @@ class HomeView(TemplateView):
 
 
 # -- Recipient views --
-class RecipientCreateView(CreateView):
+class RecipientCreateView(OwnerRequiredMixin, CreateView):
     """
     View для создания нового получателя.
     """
@@ -71,7 +72,7 @@ class RecipientCreateView(CreateView):
         return super().form_invalid(form)
 
 
-class RecipientListView(ListView):
+class RecipientListView(MenegerRequiredMixin, OwnerRequiredMixin,ListView):
     """
     View для отображения списка получателей.
     """
@@ -85,7 +86,7 @@ class RecipientListView(ListView):
         return super().get_queryset().filter(owner=self.request.user)
 
 
-class RecipientUpdateView(UpdateView):
+class RecipientUpdateView(MenegerRequiredMixin, OwnerRequiredMixin,UpdateView):
     """
     View для редактирования получателя.
     """
@@ -109,7 +110,7 @@ class RecipientUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class RecipientDeleteView(DeleteView):
+class RecipientDeleteView(OwnerRequiredMixin, DeleteView):
     """
     View для удаления получателя.
     """
@@ -134,7 +135,7 @@ class RecipientDeleteView(DeleteView):
 
 
 # -- Message views --
-class MessageCreateView(CreateView):
+class MessageCreateView(OwnerRequiredMixin, CreateView):
     """
     View для создания нового сообщения.
     """
@@ -157,7 +158,7 @@ class MessageCreateView(CreateView):
         return super().form_invalid(form)
 
 
-class MessageListView(ListView):
+class MessageListView(MenegerRequiredMixin, OwnerRequiredMixin,ListView):
     """
     View для отображения списка сообщений.
     """
@@ -171,7 +172,7 @@ class MessageListView(ListView):
         return super().get_queryset().filter(owner=self.request.user)
 
 
-class MessageUpdateView(UpdateView):
+class MessageUpdateView(MenegerRequiredMixin, OwnerRequiredMixin,UpdateView):
     """
     View для редактирования сообщения.
     """
@@ -193,7 +194,7 @@ class MessageUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class MessageDeleteView(DeleteView):
+class MessageDeleteView(OwnerRequiredMixin, DeleteView):
     """
     View для удаления сообщения.
     """
@@ -216,7 +217,7 @@ class MessageDeleteView(DeleteView):
 
 
 # -- Mailing views --
-class MailingCreateView(CreateView):
+class MailingCreateView(OwnerRequiredMixin, CreateView):
     """
     View для создания рассылки.
     """
@@ -241,7 +242,7 @@ class MailingCreateView(CreateView):
         return super().form_invalid(form)
 
 
-class MailingListView(ListView):
+class MailingListView(MenegerRequiredMixin, OwnerRequiredMixin,ListView):
     """
     View для отображения списка рассылок.
     """
@@ -264,7 +265,7 @@ class MailingListView(ListView):
         return super().get_queryset().filter(owner=self.request.user)
 
 
-class MailingUpdateView(UpdateView):
+class MailingUpdateView(MenegerRequiredMixin, OwnerRequiredMixin,UpdateView):
     """
     View для редактирования рассылки.
     """
@@ -288,7 +289,7 @@ class MailingUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class MailingDeleteView(DeleteView):
+class MailingDeleteView(OwnerRequiredMixin, DeleteView):
     """
     View для удаления рассылки.
     """
@@ -311,7 +312,7 @@ class MailingDeleteView(DeleteView):
 
 
 # -- SendAttempt views --
-class SendAttemptCreateView(CreateView):
+class SendAttemptCreateView(OwnerRequiredMixin, CreateView):
     """
     View для создания попытки рассылки.
     """
@@ -334,7 +335,7 @@ class SendAttemptCreateView(CreateView):
         return super().form_invalid(form)
 
 
-class SendAttemptView(View):
+class SendAttemptView(MenegerRequiredMixin, OwnerRequiredMixin,View):
     """
     View для запуска попытки рассылки.
     """
@@ -354,7 +355,7 @@ class SendAttemptView(View):
         return redirect("postpilot:mailing_list")
 
 
-class SendAttemptUpdateView(UpdateView):
+class SendAttemptUpdateView(MenegerRequiredMixin, OwnerRequiredMixin,UpdateView):
     """
     View для редактирования попытки рассылки.
     """
@@ -376,7 +377,7 @@ class SendAttemptUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class SendAttemptDeleteView(DeleteView):
+class SendAttemptDeleteView(OwnerRequiredMixin, DeleteView):
     """
     View для удаления попытки рассылки.
     """
