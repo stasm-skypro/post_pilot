@@ -8,7 +8,9 @@
 
     <div class="row ">
       <div class="col-md-4 mx-auto">
+        {% if user.is_authenticated %}
         <a class="btn btn-primary" href="{% url 'postpilot:mailing_create' %}" role="button">Создать рассылку</a>
+        {% endif %}
       </div>
     </div>
     <p>&nbsp;</p>

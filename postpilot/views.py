@@ -12,7 +12,7 @@ from django.views.generic import (
     TemplateView,
 )
 
-from core.mixins import OwnerRequiredMixin, MenegerRequiredMixin
+from core.mixins import OwnerRequiredMixin, MenegerRequiredMixin, IsManagerOrOwnerListMixin
 from .forms import RecipientForm, MessageForm, MailingForm, SendAttemptForm
 from .models import Recipient, Message, Mailing, SendAttempt
 from .services import send_mailing
@@ -27,6 +27,14 @@ class WelcomeView(TemplateView):
     """
 
     template_name = "welcome.html"
+
+    def get_context_data(self, **kwargs):
+        """Добавляем переменную в контекст для отображения количества рассылок."""
+        context = super().get_context_data(**kwargs)
+        context["mailings"] = Mailing.objects.all()  # Все рассылки
+        context["mailings_started"] = Mailing.objects.filter(status="started")  # Только активные рассылки
+        context["recipients"] = Recipient.objects.all()  # Получатели
+        return context
 
 
 # -- Home view --
@@ -72,7 +80,7 @@ class RecipientCreateView(OwnerRequiredMixin, CreateView):
         return super().form_invalid(form)
 
 
-class RecipientListView(MenegerRequiredMixin, OwnerRequiredMixin,ListView):
+class RecipientListView(IsManagerOrOwnerListMixin, OwnerRequiredMixin, ListView):
     """
     View для отображения списка получателей.
     """
@@ -86,7 +94,7 @@ class RecipientListView(MenegerRequiredMixin, OwnerRequiredMixin,ListView):
         return super().get_queryset().filter(owner=self.request.user)
 
 
-class RecipientUpdateView(MenegerRequiredMixin, OwnerRequiredMixin,UpdateView):
+class RecipientUpdateView(MenegerRequiredMixin, OwnerRequiredMixin, UpdateView):
     """
     View для редактирования получателя.
     """
@@ -158,7 +166,7 @@ class MessageCreateView(OwnerRequiredMixin, CreateView):
         return super().form_invalid(form)
 
 
-class MessageListView(MenegerRequiredMixin, OwnerRequiredMixin,ListView):
+class MessageListView(IsManagerOrOwnerListMixin, OwnerRequiredMixin, ListView):
     """
     View для отображения списка сообщений.
     """
@@ -172,7 +180,7 @@ class MessageListView(MenegerRequiredMixin, OwnerRequiredMixin,ListView):
         return super().get_queryset().filter(owner=self.request.user)
 
 
-class MessageUpdateView(MenegerRequiredMixin, OwnerRequiredMixin,UpdateView):
+class MessageUpdateView(MenegerRequiredMixin, OwnerRequiredMixin, UpdateView):
     """
     View для редактирования сообщения.
     """
@@ -242,7 +250,7 @@ class MailingCreateView(OwnerRequiredMixin, CreateView):
         return super().form_invalid(form)
 
 
-class MailingListView(MenegerRequiredMixin, OwnerRequiredMixin,ListView):
+class MailingListView(IsManagerOrOwnerListMixin, OwnerRequiredMixin, ListView):
     """
     View для отображения списка рассылок.
     """
@@ -265,7 +273,7 @@ class MailingListView(MenegerRequiredMixin, OwnerRequiredMixin,ListView):
         return super().get_queryset().filter(owner=self.request.user)
 
 
-class MailingUpdateView(MenegerRequiredMixin, OwnerRequiredMixin,UpdateView):
+class MailingUpdateView(MenegerRequiredMixin, OwnerRequiredMixin, UpdateView):
     """
     View для редактирования рассылки.
     """
@@ -335,7 +343,7 @@ class SendAttemptCreateView(OwnerRequiredMixin, CreateView):
         return super().form_invalid(form)
 
 
-class SendAttemptView(MenegerRequiredMixin, OwnerRequiredMixin,View):
+class SendAttemptView(MenegerRequiredMixin, OwnerRequiredMixin, View):
     """
     View для запуска попытки рассылки.
     """
@@ -355,7 +363,7 @@ class SendAttemptView(MenegerRequiredMixin, OwnerRequiredMixin,View):
         return redirect("postpilot:mailing_list")
 
 
-class SendAttemptUpdateView(MenegerRequiredMixin, OwnerRequiredMixin,UpdateView):
+class SendAttemptUpdateView(MenegerRequiredMixin, OwnerRequiredMixin, UpdateView):
     """
     View для редактирования попытки рассылки.
     """

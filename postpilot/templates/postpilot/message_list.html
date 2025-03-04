@@ -32,8 +32,12 @@
                   <div class="row">
                     <div class="col-4 text-start"><strong>{{ message.subject }}</strong></div>
                     <div class="col-4 text-start text-muted">{{ message.body_text|truncatechars:40 }}</div>
-                    <div class="col-2"><a class="btn btn-primary w-100" href="{% url 'postpilot:message_update' message.id %}" role="button">Редактировать</a></div>
-                    <div class="col-2"><a class="btn btn-danger w-100" href="{% url 'postpilot:message_delete' message.id %}" role="button">Удалить</a></div>
+                    <div class="col-2"><a class="btn btn-primary w-100 btn-sm"
+                                          href="{% url 'postpilot:message_update' message.id %}" role="button">Редактировать</a>
+                    </div>
+                    <div class="col-2"><a class="btn btn-danger w-100 btn-sm"
+                                          href="{% url 'postpilot:message_delete' message.id %}"
+                                          role="button">Удалить</a></div>
                   </div>
                 </li>
                 {% endfor %}

@@ -168,8 +168,8 @@ LOGGING = {
 AUTH_USER_MODEL = "users.CustomUser"
 
 # Редирект
-LOGIN_REDIRECT_URL = "postpilot:mailing_list"
-LOGOUT_REDIRECT_URL = "postpilot:mailing_list"
+LOGIN_REDIRECT_URL = "postpilot:home"
+LOGOUT_REDIRECT_URL = "postpilot:home"
 
 # Настройка аутентификации (необходимо для того, чтобы пользователь после успешной регистрации автоматически входил в систему)
 AUTHENTICATION_BACKENDS = [

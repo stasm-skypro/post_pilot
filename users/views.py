@@ -24,7 +24,7 @@ class CustomUserRegisterView(CreateView):
     model = CustomUser
     form_class = CustomUserRegisterForm
     template_name = "users/profile.html"
-    success_url = reverse_lazy("postpilot:mailing_list")
+    success_url = reverse_lazy("postpilot:home")
 
     @staticmethod
     def send_welcome_email(user_email):
@@ -52,7 +52,7 @@ class CustomUserRegisterView(CreateView):
         logger.info(f"Пользователь {user.email} успешно зарегистрирован.")
         self.send_welcome_email(user.email)
         logger.info(f"Приветственное письмо пользователю {user.email} отправлено.")
-        
+
         return super().form_valid(form)
 
     def form_invalid(self, form):
@@ -67,6 +67,7 @@ class CustomUserLoginView(LoginView):
     """
     Представление для авторизации пользователя.
     """
+
     template_name = "users/login.html"
     context_object_name = "user"
 
@@ -75,7 +76,7 @@ class CustomUserLoginView(LoginView):
         Переопределение метода для перенаправления пользователя после успешной авторизации.
         """
         logger.info(f"Пользователь {self.request.user.email} успешно авторизован.")
-        return reverse_lazy("postpilot:mailing_list")
+        return reverse_lazy("postpilot:home")
 
 
 # class CustomUserLogoutView(LogoutView):
@@ -89,10 +90,11 @@ class CustomUserUpdateView(UpdateView):
     """
     Представление для обновления данных пользователя.
     """
+
     model = CustomUser
     form_class = CustomUserRegisterForm
     template_name = "users/profile.html"
-    success_url = reverse_lazy("postpilot:mailing_list")
+    success_url = reverse_lazy("postpilot:home")
 
     def form_valid(self, form):
         """
@@ -115,4 +117,4 @@ def custom_logout(request):
     """Функция для создания представления выхода пользователя."""
     logout(request)
     logger.info("Пользователь успешно вышел.")
-    return redirect(reverse_lazy("postpilot:mailing_list"))
+    return redirect(reverse_lazy("postpilot:home"))

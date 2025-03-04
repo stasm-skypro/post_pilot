@@ -5,12 +5,44 @@
 <!-- Содержимое отцентрировано как по горизонтали, так и по вертикали (vh-100) -->
 <div class="container d-flex flex-column align-items-center justify-content-center text-center vh-100">
   <h1 class="mb-4">POSTPILOT - создавайте рассылки по электронной почте за считанные минуты!</h1>
-
+  <div class="row">
+    <div class="col-4">
+      <h5 class="mb-4" style="color: #34373a;">Всего рассылок: {{ mailings|length }}</h5>
+    </div>
+    <div class="col-4">
+      <h5 class="mb-4" style="color: #34373a;">Активных рассылок: {{ mailings_started|length }}</h5>
+    </div>
+    <div class="col-4">
+      <h5 class="mb-4" style="color: #34373a;">Уникальных получателей: {{ recipients|length }}</h5>
+    </div>
+  </div>
   <img src="/media/postpilot/postpilot_small.jpg" width="50%" class="d-block mx-auto mb-4">
-
   <div class="d-flex gap-3">
-    <a href="{% url 'postpilot:mailing_create' %}" class="btn btn-primary">Создать рассылку</a>
-    <a href="{% url 'postpilot:home' %}" class="btn btn-secondary">Перейти на главную</a>
+
+    <!-- Блок регистрации и входа -->
+    <div class="d-flex ms-auto">
+      {% if request.user.is_authenticated %}
+
+      <!-- Аватар пользователя (по умолчанию, если отсутствует) -->
+      {% if request.user.avatar %}
+      <img src="{{ request.user.avatar.url }}" alt="Avatar" class="rounded-circle"
+           style="width: 40px; height: 40px; margin-right: 10px;">
+      {% else %}
+      <img src="/media/users/users_default.webp" alt="Default Avatar" class="rounded-circle"
+           style="width: 40px; height: 40px; margin-right: 10px;">
+      {% endif %}
+
+      <!-- Кнопка выхода -->
+      <a class="btn btn-danger me-2" href="{% url 'users:logout' %}">Выход</a>
+      <a href="{% url 'postpilot:home' %}" class="btn btn-secondary">Перейти на главную</a>
+      {% else %}
+      <!-- Кнопки Регистрация и Вход -->
+      <a class="btn btn-primary me-2" href="{% url 'users:profile' %}">Регистрация</a>
+      <a class="btn btn-success" href="{% url 'users:login' %}">Вход</a>
+      {% endif %}
+    </div>
+    <!-- Блок регистрации и входа -->
+
   </div>
 </div>
 

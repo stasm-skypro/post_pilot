@@ -73,3 +73,23 @@ class MenegerRequiredMixin(UserPassesTestMixin):
     def handle_no_permission(self):
         """Вызывает ошибку 403, если у пользователя нет доступа."""
         raise PermissionDenied("У вас нет прав для выполнения этого действия.")
+
+
+class IsManagerOrOwnerListMixin(UserPassesTestMixin):
+    """
+    Ограничивает доступ:
+    - Владельцам (видят только свои объекты).
+    - Менеджерам (видят все, но не могут редактировать).
+    Миксин написан специально для контроллеров, использующих базовый класс ListView, который не имеет метода
+    get_object.
+    """
+
+    def test_func(self):
+        user = self.request.user
+
+        # Менеджеры могут просматривать список
+        if user.groups.filter(name="Менеджеры").exists():
+            return True
+
+        # Владельцы могут видеть только свои объекты
+        return user.is_authenticated
