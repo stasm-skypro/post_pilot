@@ -8,7 +8,7 @@ class Recipient(models.Model):
     email = models.EmailField("Email", unique=True)
     full_name = models.CharField("ФИО", max_length=255, blank=True, null=True)
     comments = models.TextField("Комментарии", blank=True)
-    owner = models.ForeignKey("users.CustomUser", on_delete=models.CASCADE, verbose_name="Владелец", default=8)
+    owner = models.ForeignKey("users.CustomUser", on_delete=models.CASCADE, verbose_name="Владелец", default=2)
 
     def __str__(self):
         """Возвращает строковое представление объекта 'Получатель рассылки'."""
@@ -18,14 +18,15 @@ class Recipient(models.Model):
         """
         Класс метаданных 'Получатель рассылки'.
         """
+
         db_table = "recipients"
         verbose_name = "Получатель"
         verbose_name_plural = "Получатели"
 
-        permissions = [
-            ("disable_mailing", "Can disable mailings"),
-            ("block_user", "Can block users"),
-        ]
+        # permissions = [
+        #     ("disable_mailing", "Can disable mailings"),
+        #     ("block_user", "Can block users"),
+        # ]
 
 
 # -- Message model --
@@ -35,7 +36,7 @@ class Message(models.Model):
     subject = models.CharField("Тема", max_length=100)
     body_text = models.TextField("Текст письма")
     created_at = models.DateTimeField("Дата создания", auto_now_add=True)  # Поле добавлено мной
-    owner = models.ForeignKey("users.CustomUser", on_delete=models.CASCADE, verbose_name="Владелец", default=8)
+    owner = models.ForeignKey("users.CustomUser", on_delete=models.CASCADE, verbose_name="Владелец", default=2)
 
     def __str__(self):
         """Возвращает строковое представление объекта 'Сообщение'."""
@@ -45,15 +46,16 @@ class Message(models.Model):
         """
         Класс метаданных 'Сообщение'.
         """
+
         db_table = "messages"
         verbose_name = "Сообщение"
         verbose_name_plural = "Сообщения"
         ordering = ["-created_at"]
 
-        permissions = [
-            ("disable_mailing", "Can disable mailings"),
-            ("block_user", "Can block users"),
-        ]
+        # permissions = [
+        #     ("disable_mailing", "Can disable mailings"),
+        #     ("block_user", "Can block users"),
+        # ]
 
 
 # -- Mailing model --
@@ -74,7 +76,7 @@ class Mailing(models.Model):
     status = models.CharField("Статус отправки", max_length=9, default="created", choices=STATUS_CHOICES)
     message = models.ForeignKey(Message, on_delete=models.CASCADE, verbose_name="Сообщение")
     recipients = models.ManyToManyField(Recipient, verbose_name="Получатели")
-    owner = models.ForeignKey("users.CustomUser", on_delete=models.CASCADE, verbose_name="Владелец", default=8)
+    owner = models.ForeignKey("users.CustomUser", on_delete=models.CASCADE, verbose_name="Владелец", default=2)
 
     def __str__(self):
         """Возвращает строковое представление объекта 'Рассылка'."""
@@ -85,6 +87,7 @@ class Mailing(models.Model):
         """
         Класс метаданных 'Рассылка'.
         """
+
         db_table = "mailings"
         verbose_name = "Рассылка"
         verbose_name_plural = "Рассылки"
@@ -92,7 +95,7 @@ class Mailing(models.Model):
 
         permissions = [
             ("disable_mailing", "Can disable mailings"),
-            ("block_user", "Can block users"),
+            # ("block_user", "Can block users"),
         ]
 
 
@@ -109,7 +112,7 @@ class SendAttempt(models.Model):
     status = models.CharField("Статус отправки", max_length=12, choices=STATUS_CHOICES, default="failed")
     response = models.TextField("Ответ сервера", blank=True)
     mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE, verbose_name="Рассылка")
-    owner = models.ForeignKey("users.CustomUser", on_delete=models.CASCADE, verbose_name="Владелец", default=8)
+    owner = models.ForeignKey("users.CustomUser", on_delete=models.CASCADE, verbose_name="Владелец", default=2)
 
     def __str__(self):
         """Возвращает строковое представление объекта 'Попытка рассылки'."""
@@ -120,12 +123,13 @@ class SendAttempt(models.Model):
         """
         Класс метаданных 'Попытка рассылки'.
         """
+
         db_table = "send_attempts"
         verbose_name = "Попытка отправки"
         verbose_name_plural = "Попытки отправки"
         ordering = ["-attempt_at"]
 
-        permissions = [
-            ("disable_mailing", "Can disable mailings"),
-            ("block_user", "Can block users"),
-        ]
+        # permissions = [
+        #     ("disable_mailing", "Can disable mailings"),
+        #     ("block_user", "Can block users"),
+        # ]

@@ -44,11 +44,13 @@ class OwnerRequiredMixin(LoginRequiredMixin):
     def form_valid(self, form):
         """Дополнительная обработка перед сохранением формы. При создании объекта автоматически проставляет владельца."""
         if not form.instance.pk:  # Проверяем, создается ли объект
-            setattr(form.instance, self.owner_field, self.request.user)   # Устанавливаем текущего пользователя владельцем
+            setattr(
+                form.instance, self.owner_field, self.request.user
+            )  # Устанавливаем текущего пользователя владельцем
         return super().form_valid(form)
 
 
-class MenegerRequiredMixin(UserPassesTestMixin):
+class ManagerRequiredMixin(UserPassesTestMixin):
     """
     Позволяет менеджерам видеть все объекты, но запрещает изменять или удалять чужие данные.
     """
@@ -80,16 +82,21 @@ class IsManagerOrOwnerListMixin(UserPassesTestMixin):
     Ограничивает доступ:
     - Владельцам (видят только свои объекты).
     - Менеджерам (видят все, но не могут редактировать).
-    Миксин написан специально для контроллеров, использующих базовый класс ListView, который не имеет метода
-    get_object.
     """
 
+    owner_field = "owner"  # Поле модели, содержащее владельца
+
     def test_func(self):
+        """Разрешает доступ менеджерам и владельцам."""
         user = self.request.user
+        return user.groups.filter(name="Менеджеры").exists() or user.is_authenticated
 
-        # Менеджеры могут просматривать список
+    def get_queryset(self):
+        """Ограничивает видимость объектов по владельцу."""
+        user = self.request.user
+        queryset = super().get_queryset()
+
         if user.groups.filter(name="Менеджеры").exists():
-            return True
+            return queryset  # Менеджеры видят все
 
-        # Владельцы могут видеть только свои объекты
-        return user.is_authenticated
+        return queryset.filter(**{self.owner_field: user})  # Владельцы видят только свои

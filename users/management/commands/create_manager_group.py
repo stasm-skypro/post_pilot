@@ -16,9 +16,13 @@ class Command(BaseCommand):
     4. Отключение рассылок (change_mailing).
     Django не предоставляет отдельного права deactivate, но можно контролировать это через change_customuser.
     """
+
     help = "Создает группу Менеджеры с нужными правами"
 
     def handle(self, *args, **kwargs):
+        """
+        Создает группу Менеджеры
+        """
         managers_group, created = Group.objects.get_or_create(name="Менеджеры")
 
         # Модели, к которым нужен доступ
@@ -32,8 +36,7 @@ class Command(BaseCommand):
             content_type = ContentType.objects.get_for_model(model)
             for perm in perms:
                 permission = Permission.objects.filter(
-                    codename=f"{perm}_{model._meta.model_name}",
-                    content_type=content_type
+                    codename=f"{perm}_{model._meta.model_name}", content_type=content_type
                 ).first()
                 if permission:
                     managers_group.permissions.add(permission)

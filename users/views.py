@@ -117,4 +117,4 @@ def custom_logout(request):
     """Функция для создания представления выхода пользователя."""
     logout(request)
     logger.info("Пользователь успешно вышел.")
-    return redirect(reverse_lazy("postpilot:home"))
+    return redirect(reverse_lazy("postpilot:welcome"))

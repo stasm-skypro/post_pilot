@@ -20,7 +20,6 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-
     def create_superuser(self, email, password=None, **extra_fields):
         """
         Метод для создания суперпользователя.
@@ -33,7 +32,7 @@ class CustomUserManager(BaseUserManager):
             raise ValueError("Superuser must have is_staff=True.")
         if not extra_fields.get("is_superuser"):
             raise ValueError("Superuser must have is_superuser=True.")
-        
+
         return self.create_user(email, password, **extra_fields)
 
 
@@ -60,18 +59,24 @@ class CustomUser(AbstractUser):
         verbose_name="Аватар",
         help_text="Загрузите аватар",
         default="/users/users_default.webp",
-        blank = True,
-        null = True,
+        blank=True,
+        null=True,
     )
 
-    odjects = CustomUserManager()
+    objects = CustomUserManager()
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["username", ]
+    REQUIRED_FIELDS = [
+        "username",
+    ]
 
     class Meta:
         verbose_name = "Пользователь"
         verbose_name_plural = "Пользователи"
+
+        permissions = [
+            ("block_user", "Can block users"),
+        ]
 
     def __str__(self):
         """Переопределение метода __str__ для вывода имени пользователя."""

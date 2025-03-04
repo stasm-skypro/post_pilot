@@ -1,6 +1,7 @@
 import logging
 
 from django.contrib import messages
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import View
@@ -12,7 +13,7 @@ from django.views.generic import (
     TemplateView,
 )
 
-from core.mixins import OwnerRequiredMixin, MenegerRequiredMixin, IsManagerOrOwnerListMixin
+from core.mixins import OwnerRequiredMixin, ManagerRequiredMixin, IsManagerOrOwnerListMixin
 from .forms import RecipientForm, MessageForm, MailingForm, SendAttemptForm
 from .models import Recipient, Message, Mailing, SendAttempt
 from .services import send_mailing
@@ -38,19 +39,36 @@ class WelcomeView(TemplateView):
 
 
 # -- Home view --
-class HomeView(TemplateView):
+class HomeView(UserPassesTestMixin, OwnerRequiredMixin, TemplateView):
     """
     View для отображения главной страницы.
     """
 
     template_name = "home.html"
 
+    def test_func(self):
+        """Метод для проверки прав доступа."""
+        user = self.request.user
+        return user.groups.filter(name="Менеджеры").exists() or user.is_authenticated
+
     def get_context_data(self, **kwargs):
         """Добавляем переменную в контекст для отображения количества рассылок со статусом "started"."""
         context = super().get_context_data(**kwargs)
-        context["mailings"] = Mailing.objects.all()  # Все рассылки
-        context["mailings_started"] = Mailing.objects.filter(status="started")  # Только активные рассылки
-        context["recipients"] = Recipient.objects.all()  # Получатели
+        user = self.request.user
+
+        if user.groups.filter(name="Менеджеры").exists():  # Фильтруем объекты только для менеджера
+            context["mailings"] = Mailing.objects.all()
+            context["mailings_started"] = Mailing.objects.filter(status="started")
+            context["recipients"] = Recipient.objects.all()
+        elif user.is_authenticated:  # Фильтруем объекты только для владельца
+            context["mailings"] = Mailing.objects.filter(owner=user)
+            context["mailings_started"] = Mailing.objects.filter(owner=user, status="started")
+            context["recipients"] = Recipient.objects.filter(owner=user)
+        else:  # Остальные не видят ничего
+            context["mailings"] = Mailing.objects.none()
+            context["mailings_started"] = Mailing.objects.none()
+            context["recipients"] = Recipient.objects.none()
+
         return context
 
 
@@ -80,7 +98,7 @@ class RecipientCreateView(OwnerRequiredMixin, CreateView):
         return super().form_invalid(form)
 
 
-class RecipientListView(IsManagerOrOwnerListMixin, OwnerRequiredMixin, ListView):
+class RecipientListView(IsManagerOrOwnerListMixin, ListView):
     """
     View для отображения списка получателей.
     """
@@ -89,12 +107,8 @@ class RecipientListView(IsManagerOrOwnerListMixin, OwnerRequiredMixin, ListView)
     form_class = RecipientForm
     context_object_name = "recipients"
 
-    def get_queryset(self):
-        """Фильтрация списка получателей по владельцу."""
-        return super().get_queryset().filter(owner=self.request.user)
 
-
-class RecipientUpdateView(MenegerRequiredMixin, OwnerRequiredMixin, UpdateView):
+class RecipientUpdateView(OwnerRequiredMixin, UpdateView):
     """
     View для редактирования получателя.
     """
@@ -166,7 +180,7 @@ class MessageCreateView(OwnerRequiredMixin, CreateView):
         return super().form_invalid(form)
 
 
-class MessageListView(IsManagerOrOwnerListMixin, OwnerRequiredMixin, ListView):
+class MessageListView(IsManagerOrOwnerListMixin, ListView):
     """
     View для отображения списка сообщений.
     """
@@ -175,12 +189,8 @@ class MessageListView(IsManagerOrOwnerListMixin, OwnerRequiredMixin, ListView):
     form_class = MessageForm
     context_object_name = "messages"
 
-    def get_queryset(self):
-        """Фильтрация списка сообщений по владельцу."""
-        return super().get_queryset().filter(owner=self.request.user)
 
-
-class MessageUpdateView(MenegerRequiredMixin, OwnerRequiredMixin, UpdateView):
+class MessageUpdateView(ManagerRequiredMixin, OwnerRequiredMixin, UpdateView):
     """
     View для редактирования сообщения.
     """
@@ -250,7 +260,7 @@ class MailingCreateView(OwnerRequiredMixin, CreateView):
         return super().form_invalid(form)
 
 
-class MailingListView(IsManagerOrOwnerListMixin, OwnerRequiredMixin, ListView):
+class MailingListView(IsManagerOrOwnerListMixin, ListView):
     """
     View для отображения списка рассылок.
     """
@@ -259,21 +269,8 @@ class MailingListView(IsManagerOrOwnerListMixin, OwnerRequiredMixin, ListView):
     form_class = MailingForm
     context_object_name = "mailings"
 
-    def get_context_data(self, **kwargs):
-        """
-        Добавляем переменную в контекст для отображения количества рассылок со статусом "started".
-        """
-        context = super().get_context_data(**kwargs)
-        # context["started_count"] = sum(1 for mailing in self.object_list if mailing.status == "started")  # Можно сразу передать  в контекст количество активных рассылок
-        context["mailings_started"] = Mailing.objects.filter(status="started")
-        return context
 
-    def get_queryset(self):
-        """Фильтрация списка рассылок по владельцу."""
-        return super().get_queryset().filter(owner=self.request.user)
-
-
-class MailingUpdateView(MenegerRequiredMixin, OwnerRequiredMixin, UpdateView):
+class MailingUpdateView(OwnerRequiredMixin, UpdateView):
     """
     View для редактирования рассылки.
     """
@@ -343,15 +340,13 @@ class SendAttemptCreateView(OwnerRequiredMixin, CreateView):
         return super().form_invalid(form)
 
 
-class SendAttemptView(MenegerRequiredMixin, OwnerRequiredMixin, View):
+class SendAttemptView(OwnerRequiredMixin, View):
     """
     View для запуска попытки рассылки.
     """
 
     def post(self, request, pk):
-        """
-        Переопределение метода POST для запуска попытки рассылки.
-        """
+        """Переопределение метода POST для запуска попытки рассылки."""
         mailing = get_object_or_404(Mailing, pk=pk)
 
         try:
@@ -363,7 +358,7 @@ class SendAttemptView(MenegerRequiredMixin, OwnerRequiredMixin, View):
         return redirect("postpilot:mailing_list")
 
 
-class SendAttemptUpdateView(MenegerRequiredMixin, OwnerRequiredMixin, UpdateView):
+class SendAttemptUpdateView(OwnerRequiredMixin, UpdateView):
     """
     View для редактирования попытки рассылки.
     """
