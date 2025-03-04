@@ -19,6 +19,7 @@ ptyprocess==0.7.0
 pure_eval==0.2.3
 Pygments==2.19.1
 python-dotenv==1.0.1
+redis==5.2.1
 sqlparse==0.5.3
 stack-data==0.6.3
 traitlets==5.14.3

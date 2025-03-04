@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.core.cache import cache
 
 
 class StyledFormMixin:
@@ -37,7 +38,11 @@ class OwnerRequiredMixin(LoginRequiredMixin):
 
     def get_queryset(self):
         """Возвращает только объекты, принадлежащие текущему пользователю."""
-        query_set = super().get_queryset()
+        query_set = cache.get("query_set")
+
+        if not query_set:
+            query_set = super().get_queryset()
+            cache.set("query_set", query_set, 60 * 15)  # 15 минут кэширования
         return query_set.filter(**{self.owner_field: self.request.user})
 
     def form_valid(self, form):
@@ -66,10 +71,10 @@ class IsManagerOrOwnerListMixin(UserPassesTestMixin):
     def get_queryset(self):
         """Ограничивает видимость объектов по владельцу."""
         user = self.request.user
-        queryset = super().get_queryset()
-        print(queryset)
+
+        query_set = super().get_queryset()
 
         if user.groups.filter(name="Менеджеры").exists():
-            return queryset  # Менеджеры видят все
+            return query_set  # Менеджеры видят все
 
-        return queryset.filter(**{self.owner_field: user})  # Владельцы видят только свои
+        return query_set.filter(**{self.owner_field: user})  # Владельцы видят только свои

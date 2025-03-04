@@ -4,7 +4,9 @@ from django.contrib import messages
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from django.views import View
+from django.views.decorators.cache import cache_page
 from django.views.generic import (
     CreateView,
     ListView,
@@ -102,6 +104,7 @@ class RecipientCreateView(OwnerRequiredMixin, CreateView):
         return super().form_invalid(form)
 
 
+@method_decorator(cache_page(60 * 15), name="dispatch")
 class RecipientListView(IsManagerOrOwnerListMixin, ListView):
     """
     View для отображения списка получателей.
@@ -184,6 +187,7 @@ class MessageCreateView(OwnerRequiredMixin, CreateView):
         return super().form_invalid(form)
 
 
+@method_decorator(cache_page(60 * 15), name="dispatch")
 class MessageListView(IsManagerOrOwnerListMixin, ListView):
     """
     View для отображения списка сообщений.
@@ -264,6 +268,7 @@ class MailingCreateView(OwnerRequiredMixin, CreateView):
         return super().form_invalid(form)
 
 
+@method_decorator(cache_page(60 * 15), name="dispatch")
 class MailingListView(IsManagerOrOwnerListMixin, ListView):
     """
     View для отображения списка рассылок.
@@ -362,6 +367,7 @@ class SendAttemptView(OwnerRequiredMixin, View):
         return redirect("postpilot:mailing_list")
 
 
+@method_decorator(cache_page(60 * 15), name="dispatch")
 class SendAttemptListView(IsManagerOrOwnerListMixin, ListView):
     """
     View для отображения списка попыток рассылки.
