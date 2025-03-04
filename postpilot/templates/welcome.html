@@ -22,6 +22,8 @@
     <!-- Блок регистрации и входа -->
     <div class="d-flex ms-auto">
       {% if request.user.is_authenticated %}
+      <p class="nav-link" style="margin-right: 10px;font-weight: bold;color: #34373a">
+        {{ request.user.username }}</p>
 
       <!-- Аватар пользователя (по умолчанию, если отсутствует) -->
       {% if request.user.avatar %}

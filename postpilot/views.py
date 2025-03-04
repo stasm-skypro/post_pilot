@@ -13,7 +13,7 @@ from django.views.generic import (
     TemplateView,
 )
 
-from core.mixins import OwnerRequiredMixin, ManagerRequiredMixin, IsManagerOrOwnerListMixin
+from core.mixins import OwnerRequiredMixin, IsManagerOrOwnerListMixin
 from .forms import RecipientForm, MessageForm, MailingForm, SendAttemptForm
 from .models import Recipient, Message, Mailing, SendAttempt
 from .services import send_mailing
@@ -35,6 +35,7 @@ class WelcomeView(TemplateView):
         context["mailings"] = Mailing.objects.all()  # Все рассылки
         context["mailings_started"] = Mailing.objects.filter(status="started")  # Только активные рассылки
         context["recipients"] = Recipient.objects.all()  # Получатели
+
         return context
 
 
@@ -60,14 +61,17 @@ class HomeView(UserPassesTestMixin, OwnerRequiredMixin, TemplateView):
             context["mailings"] = Mailing.objects.all()
             context["mailings_started"] = Mailing.objects.filter(status="started")
             context["recipients"] = Recipient.objects.all()
+            context["send_attempts"] = SendAttempt.objects.all()
         elif user.is_authenticated:  # Фильтруем объекты только для владельца
             context["mailings"] = Mailing.objects.filter(owner=user)
             context["mailings_started"] = Mailing.objects.filter(owner=user, status="started")
             context["recipients"] = Recipient.objects.filter(owner=user)
+            context["send_attempts"] = SendAttempt.objects.filter(owner=user)
         else:  # Остальные не видят ничего
             context["mailings"] = Mailing.objects.none()
             context["mailings_started"] = Mailing.objects.none()
             context["recipients"] = Recipient.objects.none()
+            context["send_attempts"] = SendAttempt.objects.none()
 
         return context
 
@@ -190,7 +194,7 @@ class MessageListView(IsManagerOrOwnerListMixin, ListView):
     context_object_name = "messages"
 
 
-class MessageUpdateView(ManagerRequiredMixin, OwnerRequiredMixin, UpdateView):
+class MessageUpdateView(OwnerRequiredMixin, UpdateView):
     """
     View для редактирования сообщения.
     """
@@ -356,6 +360,16 @@ class SendAttemptView(OwnerRequiredMixin, View):
             messages.error(request, f"Ошибка при отправке рассылки: {e}")
 
         return redirect("postpilot:mailing_list")
+
+
+class SendAttemptListView(IsManagerOrOwnerListMixin, ListView):
+    """
+    View для отображения списка попыток рассылки.
+    """
+
+    model = SendAttempt
+    form_class = SendAttemptForm
+    context_object_name = "send_attempts"
 
 
 class SendAttemptUpdateView(OwnerRequiredMixin, UpdateView):

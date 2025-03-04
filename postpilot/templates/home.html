@@ -116,6 +116,48 @@
   </div>
 </div>
 
+    <!-- Колонка: Попытки отправок (col-12) -->
+    <div class="col-12">
+      <div class="card mb-4 box-shadow">
+        <div class="card-header">
+          <h4 class="my-0 fw-bold" style="color: #34373a;">Попытки отправок</h4>
+        </div>
+        <div class="card-body">
+          <ul class="list-unstyled mt-3 mb-4">
+            <li class="card-text fw-bold">Всего попыток: {{ send_attempts|length }}</li>
+            <br/>
+
+            <!-- Чекбокс -->
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="toggle-checkbox-4"
+                     onchange="toggleList('send-attempts-list')">
+              <label class="form-check-label" for="toggle-checkbox-4">Показать попытки отправок</label>
+            </div>
+
+            <!-- Список попыток отправок (изначально скрыт) -->
+            <div class="container">
+              <ul id="send-attempts-list" class="list-group w-100" style="display: none;">
+                {% for attempt in send_attempts %}
+                <li class="list-group-item">
+                  <div class="row">
+                    <div class="col-4 text-start"><strong>{{ attempt.mailing }}</strong></div>
+                    <div class="col-2 text-start"><strong>{{ attempt.recipient.email }}</strong></div>
+                    <div class="col-2 text-start text-muted">{{ attempt.status }}</div>
+                    <div class="col-2 text-end text-muted">{{ attempt.attempt_at }}</div>
+                    <div class="col-2 text-end text-muted">{{ attempt.owner }}</div>
+                  </div>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <!-- Скрипт -->
 <script>
   function toggleList(listId) {

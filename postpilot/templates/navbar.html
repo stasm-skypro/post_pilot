@@ -19,10 +19,10 @@
         <!-- Блок регистрации и входа -->
         <div class="d-flex ms-auto">
           {% if request.user.is_authenticated %}
-
-          <!-- Аватар пользователя (по умолчанию, если отсутствует) -->
           <p class="nav-link" style="margin-right: 10px;font-weight: bold;color: #34373a">
             {{ request.user.username }}</p>
+
+          <!-- Аватар пользователя (по умолчанию, если отсутствует) -->
           {% if request.user.avatar %}
           <img src="{{ request.user.avatar.url }}" alt="Avatar" class="rounded-circle"
                style="width: 40px; height: 40px; margin-right: 10px;" title="{{ request.user.username }}">

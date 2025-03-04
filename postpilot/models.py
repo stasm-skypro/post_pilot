@@ -23,11 +23,6 @@ class Recipient(models.Model):
         verbose_name = "Получатель"
         verbose_name_plural = "Получатели"
 
-        # permissions = [
-        #     ("disable_mailing", "Can disable mailings"),
-        #     ("block_user", "Can block users"),
-        # ]
-
 
 # -- Message model --
 class Message(models.Model):
@@ -51,11 +46,6 @@ class Message(models.Model):
         verbose_name = "Сообщение"
         verbose_name_plural = "Сообщения"
         ordering = ["-created_at"]
-
-        # permissions = [
-        #     ("disable_mailing", "Can disable mailings"),
-        #     ("block_user", "Can block users"),
-        # ]
 
 
 # -- Mailing model --
@@ -95,7 +85,6 @@ class Mailing(models.Model):
 
         permissions = [
             ("disable_mailing", "Can disable mailings"),
-            # ("block_user", "Can block users"),
         ]
 
 
@@ -128,8 +117,3 @@ class SendAttempt(models.Model):
         verbose_name = "Попытка отправки"
         verbose_name_plural = "Попытки отправки"
         ordering = ["-attempt_at"]
-
-        # permissions = [
-        #     ("disable_mailing", "Can disable mailings"),
-        #     ("block_user", "Can block users"),
-        # ]
