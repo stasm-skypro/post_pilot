@@ -2,7 +2,14 @@ from django.contrib.auth import views as auth_views
 from django.urls import path, reverse_lazy
 
 from .apps import UsersConfig
-from .views import CustomUserRegisterView, CustomUserLoginView, CustomUserUpdateView, custom_logout
+from .views import (
+    CustomUserRegisterView,
+    CustomUserLoginView,
+    CustomUserUpdateView,
+    custom_logout,
+    CustomUserListView,
+    CustomUserBlockView,
+)
 
 app_name = UsersConfig.name
 
@@ -43,4 +50,6 @@ urlpatterns = [
         auth_views.PasswordResetCompleteView.as_view(template_name="users/password_reset_complete.html"),
         name="password_reset_complete",
     ),
+    path("users_list/", CustomUserListView.as_view(), name="users_list"),
+    path("block/<int:user_id>/", CustomUserBlockView.as_view(), name="block_user"),
 ]

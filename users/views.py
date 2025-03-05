@@ -1,14 +1,17 @@
 import logging
 
+from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.views import LoginView
 from django.core.mail import send_mail
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
+from django.views import View
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import CreateView, UpdateView, ListView
 
+from core.mixins import IsManagerOrOwnerListMixin
 from users.forms import CustomUserRegisterForm
 from users.models import CustomUser
 
@@ -79,20 +82,41 @@ class CustomUserLoginView(LoginView):
         return reverse_lazy("postpilot:welcome")
 
 
-# class CustomUserLogoutView(LogoutView):
-#     """
-#     Представление для выхода пользователя.
-#     """
-#     next_page = "postpilot:mailing_list"  # Автоматическое перенаправление пользователя после выхода
-
-
-class CustomUserListView(ListView):
+class CustomUserListView(IsManagerOrOwnerListMixin, ListView):
     """
     Представление для отображения списка пользователей.
     """
 
     model = CustomUser
     template_name = "users/users_list.html"
+    context_object_name = "users"
+
+
+class CustomUserBlockView(IsManagerOrOwnerListMixin, View):
+    """
+    Контроллер для блокировки и разблокировки пользователя.
+    Доступен только менеджерам.
+    """
+
+    def test_func(self):
+        """Проверяет, является ли пользователь менеджером."""
+        return self.request.user.groups.filter(name="Менеджеры").exists()
+
+    def post(self, request, *args, **kwargs):
+        """Обрабатывает POST-запрос для блокировки/разблокировки пользователя."""
+        user = get_object_or_404(CustomUser, id=kwargs["user_id"])
+
+        if user.is_active:
+            user.is_active = False
+            logger.info(f"Пользователь {user.email} заблокирован.")
+            messages.success(request, f"Пользователь {user.email} заблокирован.")
+        else:
+            user.is_active = True
+            logger.info(f"Пользователь {user.email} разблокирован.")
+            messages.success(request, f"Пользователь {user.email} разблокирован.")
+
+        user.save()
+        return redirect("users:users_list")
 
 
 class CustomUserUpdateView(UpdateView):
