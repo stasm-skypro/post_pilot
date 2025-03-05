@@ -1,6 +1,7 @@
 import logging
 
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
@@ -42,6 +43,7 @@ class WelcomeView(TemplateView):
 
 
 # -- Home view --
+@method_decorator(cache_page(60 * 15), name="dispatch")
 class HomeView(UserPassesTestMixin, OwnerRequiredMixin, TemplateView):
     """
     View для отображения главной страницы.
@@ -104,7 +106,6 @@ class RecipientCreateView(OwnerRequiredMixin, CreateView):
         return super().form_invalid(form)
 
 
-@method_decorator(cache_page(60 * 15), name="dispatch")
 class RecipientListView(IsManagerOrOwnerListMixin, ListView):
     """
     View для отображения списка получателей.
@@ -187,7 +188,6 @@ class MessageCreateView(OwnerRequiredMixin, CreateView):
         return super().form_invalid(form)
 
 
-@method_decorator(cache_page(60 * 15), name="dispatch")
 class MessageListView(IsManagerOrOwnerListMixin, ListView):
     """
     View для отображения списка сообщений.
@@ -268,7 +268,6 @@ class MailingCreateView(OwnerRequiredMixin, CreateView):
         return super().form_invalid(form)
 
 
-@method_decorator(cache_page(60 * 15), name="dispatch")
 class MailingListView(IsManagerOrOwnerListMixin, ListView):
     """
     View для отображения списка рассылок.
@@ -367,7 +366,6 @@ class SendAttemptView(OwnerRequiredMixin, View):
         return redirect("postpilot:mailing_list")
 
 
-@method_decorator(cache_page(60 * 15), name="dispatch")
 class SendAttemptListView(IsManagerOrOwnerListMixin, ListView):
     """
     View для отображения списка попыток рассылки.
@@ -420,3 +418,29 @@ class SendAttemptDeleteView(OwnerRequiredMixin, DeleteView):
         logger.info(f"Попытка рассылки успешно удалена. Статус: '{send_attempt.status}'")
         logger.info(f"Владелец рассылки - {self.request.user}")
         return super().delete(request, *args, **kwargs)
+
+
+class StopAttemptView(LoginRequiredMixin, View):
+    """
+    View для остановки попытки отправки рассылки, если она запущена.
+    """
+
+    def post(self, request, pk, *args, **kwargs):
+        mailing = get_object_or_404(Mailing, id=pk)
+
+        # Проверяем, является ли пользователь владельцем рассылки
+        if mailing.owner != request.user:
+            messages.error(request, "Вы не можете остановить эту рассылку.")
+            return redirect("postpilot:mailing_list")
+
+        # Проверяем, что рассылка находится в статусе "started"
+        if mailing.status != "started":
+            messages.warning(request, "Эта рассылка не находится в активном состоянии.")
+            return redirect("postpilot:mailing_list")
+
+        # Останавливаем рассылку
+        mailing.status = "broken"
+        mailing.save()
+
+        messages.success(request, "Рассылка успешно остановлена.")
+        return redirect("postpilot:mailing_list")

@@ -18,6 +18,7 @@ from .views import (
     MessageDeleteView,
     SendAttemptCreateView,
     SendAttemptView,
+    StopAttemptView,
 )
 
 app_name = PostpilotConfig.name
@@ -73,4 +74,7 @@ urlpatterns = [
     path(
         "sendattempt/<int:pk>/send/", SendAttemptView.as_view(), name="sendattempt"
     ),  # Форма запуска попытки рассылки
+    path(
+        "sendattempt/<int:pk>/stop/", StopAttemptView.as_view(), name="stopattempt"
+    ),  # Форма остановки попытки рассылки
 ]
