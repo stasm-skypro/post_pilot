@@ -1,0 +1,506 @@
+[
+  {
+    "model": "postpilot.recipient",
+    "pk": 1,
+    "fields": {
+      "email": "john.doe@example.com",
+      "full_name": "John Doe",
+      "comments": "Постоянный клиент, интересуется новыми предложениями.",
+      "owner": 2
+    }
+  },
+  {
+    "model": "postpilot.recipient",
+    "pk": 2,
+    "fields": {
+      "email": "jane.smith@example.com",
+      "full_name": "Jane Smith",
+      "comments": "Запрашивала рассылку акций.",
+      "owner": 2
+    }
+  },
+  {
+    "model": "postpilot.recipient",
+    "pk": 3,
+    "fields": {
+      "email": "michael.brown@example.com",
+      "full_name": "Michael Brown",
+      "comments": "Интересуется вопросами социальной справедливости.",
+      "owner": 2
+    }
+  },
+  {
+    "model": "postpilot.recipient",
+    "pk": 4,
+    "fields": {
+      "email": "emily.white@example.com",
+      "full_name": "Emily White",
+      "comments": "Любит получать новости о скидках.",
+      "owner": 3
+    }
+  },
+  {
+    "model": "postpilot.recipient",
+    "pk": 5,
+    "fields": {
+      "email": "david.clark@example.com",
+      "full_name": "David Clark",
+      "comments": "Регулярный покупатель, интересуется новыми товарами.",
+      "owner": 3
+    }
+  },
+  {
+    "model": "postpilot.recipient",
+    "pk": 6,
+    "fields": {
+      "email": "james.wilson@example.com",
+      "full_name": "James Wilson",
+      "comments": "Постоянный клиент, рекомендует наш сервис друзьям.",
+      "owner": 4
+    }
+  },
+  {
+    "model": "postpilot.recipient",
+    "pk": 7,
+    "fields": {
+      "email": "ava.moore@example.com",
+      "full_name": "Ava Moore",
+      "comments": "Участвует в программе лояльности.",
+      "owner": 4
+    }
+  },
+  {
+    "model": "postpilot.recipient",
+    "pk": 8,
+    "fields": {
+      "email": "william.johnson@example.com",
+      "full_name": "William Johnson",
+      "comments": "Интересуется сезонными предложениями.",
+      "owner": 6
+    }
+  },
+  {
+    "model": "postpilot.recipient",
+    "pk": 9,
+    "fields": {
+      "email": "olivia.brown@example.com",
+      "full_name": "Olivia Brown",
+      "comments": "Запрашивала индивидуальные скидки.",
+      "owner": 6
+    }
+  },
+  {
+    "model": "postpilot.recipient",
+    "pk": 10,
+    "fields": {
+      "email": "test_user@email.com",
+      "full_name": "Test User",
+      "comments": "Can receive mailing",
+      "owner": 7
+    }
+  },
+  {
+    "model": "postpilot.recipient",
+    "pk": 11,
+    "fields": {
+      "email": "stasm226@live.com",
+      "full_name": "Станислав1",
+      "comments": "Тестирует систему",
+      "owner": 8
+    }
+  },
+  {
+    "model": "postpilot.recipient",
+    "pk": 12,
+    "fields": {
+      "email": "stanislavmayatsky@ya.ru",
+      "full_name": "Станислав2",
+      "comments": "Тестирует систему",
+      "owner": 8
+    }
+  },
+  {
+    "model": "postpilot.recipient",
+    "pk": 13,
+    "fields": {
+      "email": "sophia.miller@example.com",
+      "full_name": "Sophia Miller",
+      "comments": "Предпочитает получать обновления раз в месяц.",
+      "owner": 9
+    }
+  },
+  {
+    "model": "postpilot.message",
+    "pk": 1,
+    "fields": {
+      "subject": "Добро пожаловать!",
+      "body_text": "Спасибо за регистрацию на нашем сайте. Надеемся, вам понравится наш сервис.",
+      "created_at": "2025-03-05T11:37:31.540Z",
+      "owner": 2
+    }
+  },
+  {
+    "model": "postpilot.message",
+    "pk": 2,
+    "fields": {
+      "subject": "Эксклюзивное предложение",
+      "body_text": "Только для вас – специальное предложение, доступное 24 часа!",
+      "created_at": "2025-03-05T11:37:59.708Z",
+      "owner": 2
+    }
+  },
+  {
+    "model": "postpilot.message",
+    "pk": 3,
+    "fields": {
+      "subject": "Скидка 10% на первую покупку",
+      "body_text": "Спешите воспользоваться скидкой на ваш первый заказ. Предложение действует до конца недели.",
+      "created_at": "2025-03-05T12:03:38.089Z",
+      "owner": 3
+    }
+  },
+  {
+    "model": "postpilot.message",
+    "pk": 4,
+    "fields": {
+      "subject": "Приглашение на вебинар",
+      "body_text": "Присоединяйтесь к нашему вебинару по продуктивности!",
+      "created_at": "2025-03-05T12:04:30.282Z",
+      "owner": 3
+    }
+  },
+  {
+    "model": "postpilot.message",
+    "pk": 5,
+    "fields": {
+      "subject": "Обновление политики конфиденциальности",
+      "body_text": "Мы обновили нашу политику конфиденциальности. Ознакомьтесь с новыми условиями на нашем сайте.",
+      "created_at": "2025-03-05T12:09:53.654Z",
+      "owner": 4
+    }
+  },
+  {
+    "model": "postpilot.message",
+    "pk": 6,
+    "fields": {
+      "subject": "Бесплатная доставка на этой неделе",
+      "body_text": "Оформите заказ до воскресенья и получите бесплатную доставку!",
+      "created_at": "2025-03-05T12:10:18.588Z",
+      "owner": 4
+    }
+  },
+  {
+    "model": "postpilot.message",
+    "pk": 7,
+    "fields": {
+      "subject": "Новое поступление товаров",
+      "body_text": "В нашем магазине появились новые товары. Загляните, чтобы увидеть новинки!",
+      "created_at": "2025-03-05T12:19:22.859Z",
+      "owner": 6
+    }
+  },
+  {
+    "model": "postpilot.message",
+    "pk": 8,
+    "fields": {
+      "subject": "Напоминание о корзине",
+      "body_text": "Вы оставили товары в корзине. Завершите покупку, пока действует скидка!",
+      "created_at": "2025-03-05T12:20:02.206Z",
+      "owner": 6
+    }
+  },
+  {
+    "model": "postpilot.message",
+    "pk": 9,
+    "fields": {
+      "subject": "Ваш персональный промокод",
+      "body_text": "Используйте промокод WELCOME2025 и получите дополнительную скидку 5%",
+      "created_at": "2025-03-05T12:24:34.596Z",
+      "owner": 7
+    }
+  },
+  {
+    "model": "postpilot.message",
+    "pk": 10,
+    "fields": {
+      "subject": "Тестовое сообщение",
+      "body_text": "Это тестовое сообщение для проверки работы сервиса",
+      "created_at": "2025-03-05T12:26:54.993Z",
+      "owner": 8
+    }
+  },
+  {
+    "model": "postpilot.message",
+    "pk": 11,
+    "fields": {
+      "subject": "Новый год – новые возможности!",
+      "body_text": "Начните год с выгодных предложений и новых возможностей!",
+      "created_at": "2025-03-05T12:28:51.436Z",
+      "owner": 9
+    }
+  },
+  {
+    "model": "postpilot.mailing",
+    "pk": 1,
+    "fields": {
+      "first_sent_at": "2025-03-05T12:37:08Z",
+      "sent_completed_at": "2025-03-05T12:41:18.593Z",
+      "status": "started",
+      "message": 2,
+      "owner": 2,
+      "recipients": [
+        1,
+        2,
+        3
+      ]
+    }
+  },
+  {
+    "model": "postpilot.mailing",
+    "pk": 2,
+    "fields": {
+      "first_sent_at": "2025-03-05T12:36:55.915Z",
+      "sent_completed_at": "2025-03-05T12:37:05.124Z",
+      "status": "completed",
+      "message": 1,
+      "owner": 2,
+      "recipients": [
+        1,
+        2,
+        3
+      ]
+    }
+  },
+  {
+    "model": "postpilot.mailing",
+    "pk": 3,
+    "fields": {
+      "first_sent_at": "2025-03-05T12:38:19.177Z",
+      "sent_completed_at": "2025-03-05T12:38:27.753Z",
+      "status": "completed",
+      "message": 3,
+      "owner": 3,
+      "recipients": [
+        4,
+        5
+      ]
+    }
+  },
+  {
+    "model": "postpilot.mailing",
+    "pk": 4,
+    "fields": {
+      "first_sent_at": "2025-03-05T12:38:02.094Z",
+      "sent_completed_at": "2025-03-05T12:38:10.194Z",
+      "status": "completed",
+      "message": 4,
+      "owner": 3,
+      "recipients": [
+        4,
+        5
+      ]
+    }
+  },
+  {
+    "model": "postpilot.mailing",
+    "pk": 5,
+    "fields": {
+      "first_sent_at": "2025-03-05T12:39:06.210Z",
+      "sent_completed_at": "2025-03-05T12:39:14.723Z",
+      "status": "completed",
+      "message": 5,
+      "owner": 4,
+      "recipients": [
+        6,
+        7
+      ]
+    }
+  },
+  {
+    "model": "postpilot.mailing",
+    "pk": 6,
+    "fields": {
+      "first_sent_at": "2025-03-05T12:38:55.529Z",
+      "sent_completed_at": "2025-03-05T12:39:03.943Z",
+      "status": "completed",
+      "message": 6,
+      "owner": 4,
+      "recipients": [
+        6,
+        7
+      ]
+    }
+  },
+  {
+    "model": "postpilot.mailing",
+    "pk": 7,
+    "fields": {
+      "first_sent_at": "2025-03-05T12:39:58.107Z",
+      "sent_completed_at": "2025-03-05T12:40:06.459Z",
+      "status": "completed",
+      "message": 7,
+      "owner": 6,
+      "recipients": [
+        8,
+        9
+      ]
+    }
+  },
+  {
+    "model": "postpilot.mailing",
+    "pk": 8,
+    "fields": {
+      "first_sent_at": "2025-03-05T12:39:48.261Z",
+      "sent_completed_at": "2025-03-05T12:39:56.613Z",
+      "status": "completed",
+      "message": 8,
+      "owner": 6,
+      "recipients": [
+        8,
+        9
+      ]
+    }
+  },
+  {
+    "model": "postpilot.mailing",
+    "pk": 9,
+    "fields": {
+      "first_sent_at": null,
+      "sent_completed_at": "2025-03-05T12:24:46.657Z",
+      "status": "created",
+      "message": 9,
+      "owner": 7,
+      "recipients": [
+        10
+      ]
+    }
+  },
+  {
+    "model": "postpilot.mailing",
+    "pk": 10,
+    "fields": {
+      "first_sent_at": "2025-03-05T12:40:30.136Z",
+      "sent_completed_at": "2025-03-05T12:40:38.505Z",
+      "status": "completed",
+      "message": 10,
+      "owner": 8,
+      "recipients": [
+        11,
+        12
+      ]
+    }
+  },
+  {
+    "model": "postpilot.mailing",
+    "pk": 11,
+    "fields": {
+      "first_sent_at": null,
+      "sent_completed_at": "2025-03-05T12:29:08.382Z",
+      "status": "created",
+      "message": 11,
+      "owner": 9,
+      "recipients": [
+        13
+      ]
+    }
+  },
+  {
+    "model": "postpilot.sendattempt",
+    "pk": 1,
+    "fields": {
+      "attempt_at": "2025-03-05T12:37:05.115Z",
+      "status": "completed",
+      "response": "Отправлено 1 писем",
+      "mailing": 2,
+      "owner": 2
+    }
+  },
+  {
+    "model": "postpilot.sendattempt",
+    "pk": 2,
+    "fields": {
+      "attempt_at": "2025-03-05T12:37:17.354Z",
+      "status": "completed",
+      "response": "Отправлено 1 писем",
+      "mailing": 1,
+      "owner": 2
+    }
+  },
+  {
+    "model": "postpilot.sendattempt",
+    "pk": 3,
+    "fields": {
+      "attempt_at": "2025-03-05T12:38:10.191Z",
+      "status": "completed",
+      "response": "Отправлено 1 писем",
+      "mailing": 4,
+      "owner": 2
+    }
+  },
+  {
+    "model": "postpilot.sendattempt",
+    "pk": 4,
+    "fields": {
+      "attempt_at": "2025-03-05T12:38:27.750Z",
+      "status": "completed",
+      "response": "Отправлено 1 писем",
+      "mailing": 3,
+      "owner": 2
+    }
+  },
+  {
+    "model": "postpilot.sendattempt",
+    "pk": 5,
+    "fields": {
+      "attempt_at": "2025-03-05T12:39:03.940Z",
+      "status": "completed",
+      "response": "Отправлено 1 писем",
+      "mailing": 6,
+      "owner": 2
+    }
+  },
+  {
+    "model": "postpilot.sendattempt",
+    "pk": 6,
+    "fields": {
+      "attempt_at": "2025-03-05T12:39:14.719Z",
+      "status": "completed",
+      "response": "Отправлено 1 писем",
+      "mailing": 5,
+      "owner": 2
+    }
+  },
+  {
+    "model": "postpilot.sendattempt",
+    "pk": 7,
+    "fields": {
+      "attempt_at": "2025-03-05T12:39:56.609Z",
+      "status": "completed",
+      "response": "Отправлено 1 писем",
+      "mailing": 8,
+      "owner": 2
+    }
+  },
+  {
+    "model": "postpilot.sendattempt",
+    "pk": 8,
+    "fields": {
+      "attempt_at": "2025-03-05T12:40:06.455Z",
+      "status": "completed",
+      "response": "Отправлено 1 писем",
+      "mailing": 7,
+      "owner": 2
+    }
+  },
+  {
+    "model": "postpilot.sendattempt",
+    "pk": 9,
+    "fields": {
+      "attempt_at": "2025-03-05T12:40:38.500Z",
+      "status": "completed",
+      "response": "Отправлено 1 писем",
+      "mailing": 10,
+      "owner": 2
+    }
+  }
+]
