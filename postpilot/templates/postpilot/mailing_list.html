@@ -56,14 +56,14 @@
                       </form>
                     </div>
 
-                    <!-- Кнопка Прервать отправку рассылки -->
+                    <!-- Кнопка Остановить -->
                     <div class="col-2">
                       <form action="{% url 'postpilot:stopattempt' mailing.id %}" method="post">
                         {% csrf_token %}
                         <button type="submit"
                                 class="btn btn-danger w-100 btn-sm
                                 {% if mailing.status != 'started' or mailing.owner != user %} disabled {% endif %}">
-                          Прервать
+                          Остановить
                         </button>
                       </form>
                     </div>

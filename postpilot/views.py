@@ -431,11 +431,13 @@ class StopAttemptView(LoginRequiredMixin, View):
         # Проверяем, является ли пользователь владельцем рассылки
         if mailing.owner != request.user:
             messages.error(request, "Вы не можете остановить эту рассылку.")
+            logger.error("Пользователь не является владельцем рассылки.")
             return redirect("postpilot:mailing_list")
 
         # Проверяем, что рассылка находится в статусе "started"
         if mailing.status != "started":
             messages.warning(request, "Эта рассылка не находится в активном состоянии.")
+            logger.warning("Рассылка не находится в активном состоянии.")
             return redirect("postpilot:mailing_list")
 
         # Останавливаем рассылку
@@ -443,4 +445,5 @@ class StopAttemptView(LoginRequiredMixin, View):
         mailing.save()
 
         messages.success(request, "Рассылка успешно остановлена.")
+        logger.info("Рассылка успешно остановлена.")
         return redirect("postpilot:mailing_list")

@@ -111,7 +111,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Media files
 MEDIA_ROOT = BASE_DIR / "media"
 MEDIA_URL = "/media/"
-FILE_UPLOAD_MAX_MEMORY_SIZE = 5242880  # max 5 MB
+FILE_UPLOAD_MAX_MEMORY_SIZE = 2 * 1024 * 1024  # max 2 MB
 
 # Работа с почтой
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
@@ -168,8 +168,8 @@ LOGGING = {
 AUTH_USER_MODEL = "users.CustomUser"
 
 # Редирект
-LOGIN_REDIRECT_URL = "postpilot:home"
-LOGOUT_REDIRECT_URL = "postpilot:home"
+LOGIN_REDIRECT_URL = "postpilot:welcome"
+LOGOUT_REDIRECT_URL = "postpilot:welcome"
 
 # Настройка аутентификации (необходимо для того, чтобы пользователь после успешной регистрации автоматически входил в систему)
 AUTHENTICATION_BACKENDS = [

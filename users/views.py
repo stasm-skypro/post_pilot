@@ -24,7 +24,7 @@ class CustomUserRegisterView(CreateView):
     model = CustomUser
     form_class = CustomUserRegisterForm
     template_name = "users/profile.html"
-    success_url = reverse_lazy("postpilot:home")
+    success_url = reverse_lazy("postpilot:welcome")
 
     @staticmethod
     def send_welcome_email(user_email):
@@ -76,7 +76,7 @@ class CustomUserLoginView(LoginView):
         Переопределение метода для перенаправления пользователя после успешной авторизации.
         """
         logger.info(f"Пользователь {self.request.user.email} успешно авторизован.")
-        return reverse_lazy("postpilot:home")
+        return reverse_lazy("postpilot:welcome")
 
 
 # class CustomUserLogoutView(LogoutView):
@@ -94,7 +94,7 @@ class CustomUserUpdateView(UpdateView):
     model = CustomUser
     form_class = CustomUserRegisterForm
     template_name = "users/profile.html"
-    success_url = reverse_lazy("postpilot:home")
+    success_url = reverse_lazy("postpilot:welcome")
 
     def form_valid(self, form):
         """
