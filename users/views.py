@@ -7,7 +7,7 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, ListView
 
 from users.forms import CustomUserRegisterForm
 from users.models import CustomUser
@@ -84,6 +84,15 @@ class CustomUserLoginView(LoginView):
 #     Представление для выхода пользователя.
 #     """
 #     next_page = "postpilot:mailing_list"  # Автоматическое перенаправление пользователя после выхода
+
+
+class CustomUserListView(ListView):
+    """
+    Представление для отображения списка пользователей.
+    """
+
+    model = CustomUser
+    template_name = "users/users_list.html"
 
 
 class CustomUserUpdateView(UpdateView):

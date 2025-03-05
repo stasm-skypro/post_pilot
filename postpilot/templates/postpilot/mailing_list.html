@@ -62,7 +62,7 @@
                         {% csrf_token %}
                         <button type="submit"
                                 class="btn btn-danger w-100 btn-sm
-                                {% if mailing.status != 'started' or mailing.owner != user %} disabled {% endif %}">
+                                {% if mailing.status != 'started' or mailing.owner != user and user.groups.all|dictsort:'name'|join:', ' != 'Менеджеры' %} disabled {% endif %}">
                           Остановить
                         </button>
                       </form>

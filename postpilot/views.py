@@ -5,9 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.utils.decorators import method_decorator
 from django.views import View
-from django.views.decorators.cache import cache_page
 from django.views.generic import (
     CreateView,
     ListView,
@@ -43,7 +41,6 @@ class WelcomeView(TemplateView):
 
 
 # -- Home view --
-@method_decorator(cache_page(60 * 15), name="dispatch")
 class HomeView(UserPassesTestMixin, OwnerRequiredMixin, TemplateView):
     """
     View для отображения главной страницы.
@@ -66,11 +63,13 @@ class HomeView(UserPassesTestMixin, OwnerRequiredMixin, TemplateView):
             context["mailings_started"] = Mailing.objects.filter(status="started")
             context["recipients"] = Recipient.objects.all()
             context["send_attempts"] = SendAttempt.objects.all()
+
         elif user.is_authenticated:  # Фильтруем объекты только для владельца
             context["mailings"] = Mailing.objects.filter(owner=user)
             context["mailings_started"] = Mailing.objects.filter(owner=user, status="started")
             context["recipients"] = Recipient.objects.filter(owner=user)
             context["send_attempts"] = SendAttempt.objects.filter(owner=user)
+
         else:  # Остальные не видят ничего
             context["mailings"] = Mailing.objects.none()
             context["mailings_started"] = Mailing.objects.none()
