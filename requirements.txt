@@ -1,5 +1,7 @@
 asgiref==3.8.1
 asttokens==3.0.0
+black==25.1.0
+click==8.1.8
 decorator==5.1.1
 Django==5.1.5
 django-stubs==5.1.2
@@ -12,9 +14,12 @@ matplotlib-inline==0.1.7
 mccabe==0.7.0
 mypy==1.14.1
 mypy-extensions==1.0.0
+packaging==24.2
 parso==0.8.4
+pathspec==0.12.1
 pexpect==4.9.0
 pillow==11.1.0
+platformdirs==4.3.6
 prompt_toolkit==3.0.50
 psycopg2-binary==2.9.10
 ptyprocess==0.7.0

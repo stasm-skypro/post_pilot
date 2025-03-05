@@ -46,7 +46,8 @@ class OwnerRequiredMixin(LoginRequiredMixin):
         return query_set.filter(**{self.owner_field: self.request.user})
 
     def form_valid(self, form):
-        """Дополнительная обработка перед сохранением формы. При создании объекта автоматически проставляет владельца."""
+        """Дополнительная обработка перед сохранением формы. При создании объекта автоматически
+        проставляет владельца."""
         if not form.instance.pk:  # Проверяем, создается ли объект
             setattr(
                 form.instance, self.owner_field, self.request.user

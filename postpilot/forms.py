@@ -13,9 +13,7 @@ load_dotenv(override=True)
 logger = logging.getLogger("postpilot")
 logger.setLevel(logging.DEBUG)
 handler = logging.FileHandler("postpilot/logs/reports.log", "a", "utf-8")
-handler.setFormatter(
-    logging.Formatter("%(asctime)s - %(name)s - %(levelname)s: %(message)s")
-)
+handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s: %(message)s"))
 logger.addHandler(handler)
 
 
@@ -41,9 +39,7 @@ class RecipientForm(StyledFormMixin, forms.ModelForm):
         for word in forbidden_words:
             if word in full_name.lower():
                 logger.warning("В поле 'ФИО' запрещено использовать слово '%s'" % word)
-                raise forms.ValidationError(
-                    "В поле 'ФИО' запрещено использовать слово '%s'" % word
-                )
+                raise forms.ValidationError("В поле 'ФИО' запрещено использовать слово '%s'" % word)
 
         return full_name
 
@@ -56,9 +52,7 @@ def clean_email(self):
     for word in forbidden_words:
         if word in email.lower():
             logger.warning("В поле 'Email' запрещено использовать слово '%s'" % word)
-            raise forms.ValidationError(
-                "В поле 'Email' запрещено использовать слово '%s'" % word
-            )
+            raise forms.ValidationError("В поле 'Email' запрещено использовать слово '%s'" % word)
     return email
 
 
@@ -82,9 +76,7 @@ class MessageForm(StyledFormMixin, forms.ModelForm):
         for word in forbidden_words:
             if word in subject.lower():
                 logger.warning("В поле 'Тема' запрещено использовать слово '%s'" % word)
-                raise forms.ValidationError(
-                    "В поле 'Тема' запрещено использовать слово '%s'" % word
-                )
+                raise forms.ValidationError("В поле 'Тема' запрещено использовать слово '%s'" % word)
         return subject
 
     def clean_body_text(self):
@@ -94,12 +86,8 @@ class MessageForm(StyledFormMixin, forms.ModelForm):
         body_text = cleaned_data.get("body_text", "")
         for word in forbidden_words:
             if word.lower() in body_text.lower():
-                logger.warning(
-                    "В поле 'Текст' запрещено использовать слово '%s'" % word
-                )
-                raise forms.ValidationError(
-                    "В поле 'Текст' запрещено использовать слово '%s'" % word
-                )
+                logger.warning("В поле 'Текст' запрещено использовать слово '%s'" % word)
+                raise forms.ValidationError("В поле 'Текст' запрещено использовать слово '%s'" % word)
         return body_text
 
 
@@ -123,12 +111,11 @@ class MailingForm(StyledFormMixin, forms.ModelForm):
         end_date = cleaned_data.get("end_date")
         if start_date and end_date and start_date > end_date:
             logger.warning("Дата начала рассылки не может быть позже даты окончания")
-            raise forms.ValidationError(
-                "Дата начала рассылки не может быть позже даты окончания"
-            )
+            raise forms.ValidationError("Дата начала рассылки не может быть позже даты окончания")
         return cleaned_data
 
-    # Здесь нет необходимости проверять на чистоту получателей и сообщений, так как они проверяются в соответствующих формах.
+    # Здесь нет необходимости проверять на чистоту получателей и сообщений, так как они проверяются
+    # в соответствующих формах.
 
 
 class SendAttemptForm(StyledFormMixin, forms.ModelForm):

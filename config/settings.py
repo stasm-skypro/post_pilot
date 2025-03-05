@@ -171,7 +171,8 @@ AUTH_USER_MODEL = "users.CustomUser"
 LOGIN_REDIRECT_URL = "postpilot:welcome"
 LOGOUT_REDIRECT_URL = "postpilot:welcome"
 
-# Настройка аутентификации (необходимо для того, чтобы пользователь после успешной регистрации автоматически входил в систему)
+# Настройка аутентификации (необходимо для того, чтобы пользователь после успешной регистрации автоматически
+# входил в систему)
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
 ]

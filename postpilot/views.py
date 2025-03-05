@@ -94,7 +94,8 @@ class RecipientCreateView(OwnerRequiredMixin, CreateView):
         """Дополнительная обработка перед сохранением формы."""
         self.object = form.save()  # Сохраняем объект формы в базу
         logger.info(
-            f"Получатель рассылки успешно создан. Имя получателя: '{self.object.full_name}'. Email: '{self.object.email}'"
+            f"Получатель рассылки успешно создан. Имя получателя: "
+            f"'{self.object.full_name}'. Email: '{self.object.email}'"
         )
         form.instance.owner = self.request.user  # Устанавливаем текущего пользователя владельцем
         logger.info(f"Владелец рассылки - {self.request.user}")
