@@ -145,9 +145,13 @@ class CustomUserUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-# Функция для создания представления выхода пользователя (FBV).
-def custom_logout(request):
-    """Функция для создания представления выхода пользователя."""
-    logout(request)
-    logger.info("Пользователь успешно вышел.")
-    return redirect(reverse_lazy("postpilot:welcome"))
+class CustomUserLogoutView(View):
+    """
+    Представление для выхода пользователя.
+    """
+
+    def get(self, request):
+        """Обрабатывает GET-запрос для выхода пользователя."""
+        logout(request)
+        logger.info("Пользователь успешно вышел.")
+        return redirect(reverse_lazy("postpilot:welcome"))
