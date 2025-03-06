@@ -5,10 +5,14 @@ from postpilot.models import Mailing
 
 
 class Command(BaseCommand):
+    """
+    Кастомная команда отправки рассылки.
+    """
+
     help = "Отправка всех активных рассылок"
 
     def handle(self, *args, **kwargs):
-        """Метод, который выполняет команду."""
+        """Обработчик команды."""
         mailings = Mailing.objects.filter(status="started")
 
         if not mailings.exists():
@@ -31,4 +35,7 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS("Все активные рассылки отправлены."))
 
     def add_arguments(self, parser):
+        """Позволяет отправить рассылку только для конкретного ID.
+        Пример использования: ./manage.py send_mailing 3"""
+
         parser.add_argument("mailing_id", nargs="?", type=int, help="ID рассылки")

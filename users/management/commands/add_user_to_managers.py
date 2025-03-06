@@ -5,12 +5,18 @@ from users.models import CustomUser
 
 
 class Command(BaseCommand):
+    """
+    Кастомная команда для добавления пользователя в группу 'Менеджеры'.
+    """
+
     help = "Добавляет пользователя в группу 'Менеджеры'"
 
     def add_arguments(self, parser):
+        """Добавляет аргументы команды."""
         parser.add_argument("email", type=str, help="Email пользователя")
 
     def handle(self, *args, **options):
+        """Обработчик команды."""
         email = options["email"]
         try:
             user = CustomUser.objects.get(email=email)
