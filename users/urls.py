@@ -6,7 +6,6 @@ from .views import (
     CustomUserRegisterView,
     CustomUserLoginView,
     CustomUserUpdateView,
-    # custom_logout,
     CustomUserListView,
     CustomUserBlockView,
     CustomUserLogoutView,
@@ -19,7 +18,6 @@ urlpatterns = [
     path("register/", CustomUserRegisterView.as_view(), name="profile"),  # регистрация
     path("login/", CustomUserLoginView.as_view(), name="login"),  # авторизация
     path("logout/", CustomUserLogoutView.as_view(), name="logout"),  # выход
-    # path("logout/", custom_logout, name="logout"),
     path("user/<int:pk>/update/", CustomUserUpdateView.as_view(), name="update"),  # редактирование
     # -- Сброс пароля --
     # Django по умолчанию связывает password_reset/ с admin/password_reset/, поэтому нужно явно
