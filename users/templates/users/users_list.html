@@ -32,7 +32,8 @@
                         {% csrf_token %}
                         {% if user.is_active == True %}
                         <button type="submit"
-                                class="btn btn-danger btn-sm {% if not user.groups.all|dictsort:'name'|join:', ' != 'Менеджеры' %} disabled {% endif %}">
+                                class="btn btn-danger btn-sm {% if not user.groups.all|dictsort:'name'|join:', ' != 'Менеджеры' %} disabled {% endif %}"
+                                style="{% if not user.groups.all|dictsort:'name'|join:', ' != 'Менеджеры' %} display: none {% endif %};">
                           Блокировать
                         </button>
                         {% else %}
