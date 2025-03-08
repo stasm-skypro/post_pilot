@@ -29,10 +29,10 @@
                     <form action="{% url 'users:block_user' user.id %}" method="post">
                       {% csrf_token %}
                       <button type="submit"
-        class="btn {% if user.is_active %}btn-danger{% else %}btn-success{% endif %} btn-sm"
-        {% if user.groups.all|dictsort:'name'|join:', ' == 'Менеджеры' %} style="display: none;" {% endif %}>
-  {% if user.is_active %}Блокировать{% else %}Разблокировать{% endif %}
-</button>
+                              class="btn {% if user.is_active %}btn-danger{% else %}btn-success{% endif %} btn-sm"
+                              {% if user.groups.all|dictsort:'name'|join:', ' == ' Менеджеры' %} style="display: none;" {% endif %}>
+                      {% if user.is_active %}Блокировать{% else %}Разблокировать{% endif %}
+                      </button>
                     </form>
                     {% endif %}
                   </div>
