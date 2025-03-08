@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'navbar.html' %}
+
+<div class="pricing-header px-3 py-3 pt-md-1 pb-md-4 mx-auto text-center">
+  <div class="row">
+
+    <!-- Колонка: Все рассылки -->
+    <div class="col-4">
+      <div class="card mb-4 box-shadow">
+        <div class="card-header">
+          <h4 class="my-0 fw-bold" style="color: #34373a;">Список рассылок</h4>
+        </div>
+        <div class="card-body">
+          <ul class="list-unstyled mt-3 mb-4">
+            <li class="card-text fw-bold">Всего рассылок: {{ mailings|length }}</li>
+            <br/>
+
+            <!-- Чекбокс -->
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="toggle-checkbox-1"
+                     onchange="toggleList('mailings-list-1')">
+              <label class="form-check-label" for="toggle-checkbox-1">Показать рассылки</label>
+            </div>
+
+            <!-- Список всех рассылок (изначально скрыт) -->
+            <div class="container">
+              <ul id="mailings-list-1" class="list-group w-100" style="display: none;">
+                {% for mailing in mailings %}
+                <li class="list-group-item">
+                  <div class="row">
+                    <div class="col-8 text-start"><strong>{{ mailing.message }}</strong></div>
+                    <div class="col-4 text-end text-muted">{{ mailing.get_status_display }}</div>
+                  </div>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Колонка: Активные рассылки -->
+    <div class="col-4">
+      <div class="card mb-4 box-shadow">
+        <div class="card-header">
+          <h4 class="my-0 fw-bold" style="color: #34373a;">Активные рассылки</h4>
+        </div>
+        <div class="card-body">
+          <ul class="list-unstyled mt-3 mb-4">
+            <li class="card-text fw-bold">Активных рассылок: {{ mailings_started|length }}</li>
+            <br/>
+
+            <!-- Чекбокс -->
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="toggle-checkbox-2"
+                     onchange="toggleList('mailings-list-2')">
+              <label class="form-check-label" for="toggle-checkbox-2">Показать активные рассылки</label>
+            </div>
+
+            <!-- Список активных рассылок (изначально скрыт) -->
+            <div class="container">
+              <ul id="mailings-list-2" class="list-group w-100" style="display: none;">
+                {% for mailing in mailings_started %}
+                <li class="list-group-item">
+                  <div class="row">
+                    <div class="col-8 text-start"><strong>{{ mailing.message }}</strong></div>
+                    <div class="col-4 text-end text-muted">{{ mailing.get_status_display }}</div>
+                  </div>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Колонка: Уникальные получатели -->
+    <div class="col-4">
+      <div class="card mb-4 box-shadow">
+        <div class="card-header">
+          <h4 class="my-0 fw-bold" style="color: #34373a;">Уникальные получатели</h4>
+        </div>
+        <div class="card-body">
+          <ul class="list-unstyled mt-3 mb-4">
+            <li class="card-text fw-bold">Уникальных получателей: {{ recipients|length }}</li>
+            <br/>
+
+            <!-- Чекбокс -->
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="toggle-checkbox-3"
+                     onchange="toggleList('mailings-list-3')">
+              <label class="form-check-label" for="toggle-checkbox-3">Показать уникальных получателей</label>
+            </div>
+
+            <!-- Список уникальных получателей (изначально скрыт) -->
+            <div class="container">
+              <ul id="mailings-list-3" class="list-group w-100" style="display: none;">
+                {% for recipient in recipients %}
+                <li class="list-group-item">
+                  <div class="row">
+                    <div class="col-4 text-start"><strong>{{ recipient.full_name }}</strong></div>
+                    <div class="col-8 text-end text-muted">{{ recipient.email }}</div>
+                  </div>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Колонка: Попытки отправок (col-12) -->
+    <div class="col-12">
+      <div class="card mb-4 box-shadow">
+        <div class="card-header">
+          <h4 class="my-0 fw-bold" style="color: #34373a;">Попытки отправок</h4>
+        </div>
+        <div class="card-body">
+          <ul class="list-unstyled mt-3 mb-4">
+            <li class="card-text fw-bold">Всего попыток: {{ send_attempts|length }}</li>
+            <br/>
+
+            <!-- Чекбокс -->
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="toggle-checkbox-4"
+                     onchange="toggleList('send-attempts-list')">
+              <label class="form-check-label" for="toggle-checkbox-4">Показать попытки отправок</label>
+            </div>
+
+            <!-- Список попыток отправок (изначально скрыт) -->
+            <div class="container">
+              <ul id="send-attempts-list" class="list-group w-100" style="display: none;">
+                {% for attempt in send_attempts %}
+                <li class="list-group-item">
+                  <div class="row">
+                    <div class="col-4 text-start"><strong>{{ attempt.mailing }}</strong></div>
+                    <div class="col-2 text-start"><strong>{{ attempt.recipient.email }}</strong></div>
+                    <div class="col-2 text-start text-muted">{{ attempt.status }}</div>
+                    <div class="col-2 text-end text-muted">{{ attempt.attempt_at }}</div>
+                    <div class="col-2 text-end text-muted">{{ attempt.owner }}</div>
+                  </div>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Скрипт -->
+<script>
+  function toggleList(listId) {
+      let list = document.getElementById(listId);
+      list.style.display = list.style.display === "none" ? "block" : "none";
+  }
+</script>
+
+{% endblock %}

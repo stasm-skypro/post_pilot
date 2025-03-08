@@ -1,0 +1,102 @@
+[
+  {
+    "model": "postpilot.SendAttempt",
+    "pk": 1,
+    "fields": {
+      "attempt_at": "2025-01-25T10:00:00Z",
+      "status": "successfully",
+      "response": "Сообщение успешно доставлено.",
+      "mailing": 1
+    }
+  },
+  {
+    "model": "postpilot.SendAttempt",
+    "pk": 2,
+    "fields": {
+      "attempt_at": "2025-01-25T10:05:00Z",
+      "status": "failed",
+      "response": "Сервер недоступен. Попробуйте позже.",
+      "mailing": 1
+    }
+  },
+  {
+    "model": "postpilot.SendAttempt",
+    "pk": 3,
+    "fields": {
+      "attempt_at": "2025-01-25T10:10:00Z",
+      "status": "successfully",
+      "response": "Сообщение успешно доставлено второму получателю.",
+      "mailing": 2
+    }
+  },
+  {
+    "model": "postpilot.SendAttempt",
+    "pk": 4,
+    "fields": {
+      "attempt_at": "2025-01-26T08:35:00Z",
+      "status": "successfully",
+      "response": "Сообщение успешно доставлено.",
+      "mailing": 3
+    }
+  },
+  {
+    "model": "postpilot.SendAttempt",
+    "pk": 5,
+    "fields": {
+      "attempt_at": "2025-01-26T08:40:00Z",
+      "status": "failed",
+      "response": "Ошибка аутентификации почтового сервера.",
+      "mailing": 3
+    }
+  },
+  {
+    "model": "postpilot.SendAttempt",
+    "pk": 6,
+    "fields": {
+      "attempt_at": "2025-01-27T14:15:00Z",
+      "status": "successfully",
+      "response": "Сообщение успешно доставлено.",
+      "mailing": 4
+    }
+  },
+  {
+    "model": "postpilot.SendAttempt",
+    "pk": 7,
+    "fields": {
+      "attempt_at": "2025-01-27T14:20:00Z",
+      "status": "failed",
+      "response": "Почтовый ящик получателя переполнен.",
+      "mailing": 5
+    }
+  },
+  {
+    "model": "postpilot.SendAttempt",
+    "pk": 8,
+    "fields": {
+      "attempt_at": "2025-01-28T16:50:00Z",
+      "status": "successfully",
+      "response": "Сообщение успешно доставлено.",
+      "mailing": 6
+    }
+  },
+  {
+    "model": "postpilot.SendAttempt",
+    "pk": 9,
+    "fields": {
+      "attempt_at": "2025-01-29T07:20:00Z",
+      "status": "failed",
+      "response": "Сервер отклонил сообщение как спам.",
+      "mailing": 7
+    }
+  },
+  {
+    "model": "postpilot.SendAttempt",
+    "pk": 10,
+    "fields": {
+      "attempt_at": "2025-01-30T11:05:00Z",
+      "status": "successfully",
+      "response": "Сообщение успешно доставлено.",
+      "mailing": 8
+    }
+  }
+]

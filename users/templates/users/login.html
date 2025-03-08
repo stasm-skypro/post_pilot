@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %} POSTPILOT - вход {% endblock %}
+{% block content %}
+
+{% include 'navbar.html' %}
+
+<div class="container">
+  <div class="row" style="align-items: center; justify-content: center;">
+    <div class="col-8">
+      <form class="row" method="post" enctype="multipart/form-data">
+        <div class="card">
+          <div class="card-body">
+            {% csrf_token %}
+            {{ form.non_field_error }}
+            {{ form.as_p }}
+          </div>
+          <div class="btn-group" style="width: 50%">
+            <button type="submit" class="btn btn-primary">Войти</button>
+            <a href="{% url 'postpilot:welcome' %}" class="btn btn-secondary">Отменить</a>
+          </div>
+          <p><a href="{% url 'users:password_reset' %}">Забыли пароль?</a></p>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

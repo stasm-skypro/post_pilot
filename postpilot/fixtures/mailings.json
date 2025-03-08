@@ -1,0 +1,112 @@
+[
+  {
+    "model": "postpilot.Mailing",
+    "pk": 1,
+    "fields": {
+      "first_sent_at": "2025-01-20T10:00:00Z",
+      "sent_completed_at": "2025-01-20T11:00:00Z",
+      "status": "completed",
+      "message": 1,
+      "recipients": [1, 2]
+    }
+  },
+  {
+    "model": "postpilot.Mailing",
+    "pk": 2,
+    "fields": {
+      "first_sent_at": "2025-01-22T12:00:00Z",
+      "sent_completed_at": "2025-01-22T12:30:00Z",
+      "status": "sent",
+      "message": 2,
+      "recipients": [2, 3]
+    }
+  },
+  {
+    "model": "postpilot.Mailing",
+    "pk": 3,
+    "fields": {
+      "first_sent_at": "2025-01-25T09:00:00Z",
+      "sent_completed_at": null,
+      "status": "started",
+      "message": 3,
+      "recipients": [1, 3]
+    }
+  },
+  {
+    "model": "postpilot.Mailing",
+    "pk": 4,
+    "fields": {
+      "first_sent_at": "2025-01-26T08:30:00Z",
+      "sent_completed_at": "2025-01-26T09:15:00Z",
+      "status": "completed",
+      "message": 4,
+      "recipients": [1, 4]
+    }
+  },
+  {
+    "model": "postpilot.Mailing",
+    "pk": 5,
+    "fields": {
+      "first_sent_at": "2025-01-27T14:00:00Z",
+      "sent_completed_at": null,
+      "status": "started",
+      "message": 5,
+      "recipients": [2, 5]
+    }
+  },
+  {
+    "model": "postpilot.Mailing",
+    "pk": 6,
+    "fields": {
+      "first_sent_at": "2025-01-28T16:45:00Z",
+      "sent_completed_at": "2025-01-28T17:30:00Z",
+      "status": "completed",
+      "message": 6,
+      "recipients": [3, 4]
+    }
+  },
+  {
+    "model": "postpilot.Mailing",
+    "pk": 7,
+    "fields": {
+      "first_sent_at": "2025-01-29T07:15:00Z",
+      "sent_completed_at": "2025-01-29T08:00:00Z",
+      "status": "sent",
+      "message": 7,
+      "recipients": [1, 5]
+    }
+  },
+  {
+    "model": "postpilot.Mailing",
+    "pk": 8,
+    "fields": {
+      "first_sent_at": "2025-01-30T11:00:00Z",
+      "sent_completed_at": null,
+      "status": "started",
+      "message": 8,
+      "recipients": [3, 5]
+    }
+  },
+  {
+    "model": "postpilot.Mailing",
+    "pk": 9,
+    "fields": {
+      "first_sent_at": "2025-01-31T10:30:00Z",
+      "sent_completed_at": "2025-01-31T11:15:00Z",
+      "status": "completed",
+      "message": 9,
+      "recipients": [2, 4]
+    }
+  },
+  {
+    "model": "postpilot.Mailing",
+    "pk": 10,
+    "fields": {
+      "first_sent_at": "2025-02-01T09:45:00Z",
+      "sent_completed_at": null,
+      "status": "started",
+      "message": 10,
+      "recipients": [1, 3, 4]
+    }
+  }
+]

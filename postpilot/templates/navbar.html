@@ -1,0 +1,48 @@
+<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-3 mb-3 bg-white border-bottom box-shadow">
+  <nav class="navbar navbar-expand-lg bg-body-tertiary w-100">
+    <div class="container-fluid">
+      <img src="/media/postpilot/postpilot_logo2.jpg" class="rounded-circle" style="max-width: 10%">
+      <a class="navbar-brand" style="color: #34373a;border-radius: 25px;" href="{% url 'postpilot:welcome' %}">POSTPILOT</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+              aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Переключатель навигации">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-link active" aria-current="page" href="{% url 'postpilot:home' %}">Главная</a>
+          <a class="nav-link active" aria-current="page" href="{% url 'postpilot:mailing_list' %}">Список
+            рассылок</a>
+          <a class="nav-link" href="{% url 'postpilot:message_list' %}">Сообщения</a>
+          <a class="nav-link" href="{% url 'postpilot:recipient_list' %}">Уникальные получатели</a>
+          <a class="nav-link {% if user.groups.all|dictsort:'name'|join:', ' != 'Менеджеры' %} disabled {% endif %}"
+             href="{% url 'users:users_list' %}">Пользователи сервиса</a>
+        </div>
+
+        <!-- Блок регистрации и входа -->
+        <div class="d-flex ms-auto">
+          {% if request.user.is_authenticated %}
+          <p class="nav-link" style="margin-right: 10px;font-weight: bold;color: #34373a">
+            {{ request.user.username }}</p>
+
+          <!-- Аватар пользователя (по умолчанию, если отсутствует) -->
+          {% if request.user.avatar %}
+          <img src="{{ request.user.avatar.url }}" alt="Avatar" class="rounded-circle"
+               style="width: 40px; height: 40px; margin-right: 10px;" title="{{ request.user.username }}">
+          {% else %}
+          <img src="/media/users/users_default.webp" alt="Default Avatar" class="rounded-circle"
+               style="width: 40px; height: 40px; margin-right: 10px;">
+          {% endif %}
+
+          <!-- Кнопка выхода -->
+          <a class="btn btn-light me-2" href="{% url 'users:logout' %}">Выход</a>
+          {% else %}
+          <!-- Кнопки Регистрация и Вход -->
+          <a class="btn btn-light me-2" href="{% url 'users:profile' %}">Регистрация</a>
+          <a class="btn btn-light" href="{% url 'users:login' %}">Вход</a>
+          {% endif %}
+        </div>
+
+      </div>
+    </div>
+  </nav>
+</div>

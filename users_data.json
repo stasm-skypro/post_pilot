@@ -1,0 +1,175 @@
+[
+  {
+    "model": "users.customuser",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$870000$xrPZRYAjSChcNkhK00LQ8I$jiNqg/WgPsX48QW7k6zlTtNKUFV7lnum7HBqjN5BwsA=",
+      "last_login": "2025-03-05T18:29:48.341Z",
+      "is_superuser": false,
+      "first_name": "Tom",
+      "last_name": "Cruise",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-03-01T12:58:51Z",
+      "username": "Tom Cruise",
+      "email": "tom.cruise@ya.ru",
+      "avatar": "/users/users_default.webp",
+      "groups": [
+        2
+      ],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$870000$UblVneJDd0g6ZTqpp49LnM$yNxWAOs6USHCfgu8v2rcoogncNtZGbPoKbuZlOhKZwo=",
+      "last_login": "2025-03-05T18:18:35.396Z",
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-03-01T13:13:34.735Z",
+      "username": "Daniel Craig",
+      "email": "daniel.craig@ya.ru",
+      "avatar": "/users/users_default.webp",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$870000$tJf2dDnjotizgWxQmTSgan$yhmlsawp+q3L0gyxFxuQmq9w/yDTmW8sYH3mJZCCNik=",
+      "last_login": "2025-03-05T12:37:56.835Z",
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-03-01T16:10:19.872Z",
+      "username": "Tom Hardy",
+      "email": "tom.hardy@ya.ru",
+      "avatar": "/users/users_default.webp",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": 4,
+    "fields": {
+      "password": "pbkdf2_sha256$870000$bJw7BRB0ySGUA3WQ2bpVqG$KAjzKkTHL1VT1IlhKnZGlLjOW+P/cyQdkQyGRDWrOfg=",
+      "last_login": "2025-03-05T12:38:50.576Z",
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-03-01T16:39:20.321Z",
+      "username": "Samanta Fox",
+      "email": "samanta.fox@ya.ru",
+      "avatar": "/users/users_default.webp",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": 5,
+    "fields": {
+      "password": "pbkdf2_sha256$870000$hAJ17Fq3HnPRqw9prZqP2Z$NDdaJpmXkN/DSChhsJDJCzMULBKqrF2Mks7g9vYWIvw=",
+      "last_login": "2025-03-05T16:46:04.524Z",
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-03-02T14:32:55Z",
+      "username": "Петя Васечкин",
+      "email": "petya.vas@ya.ru",
+      "avatar": "/users/users_default.webp",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": 6,
+    "fields": {
+      "password": "pbkdf2_sha256$870000$OePNsVDWVucl9nzqqgmbZQ$RH0UsirQp14b9saU1wPIjRSw38miP40suOdOtg3yI0o=",
+      "last_login": "2025-03-05T12:39:42.982Z",
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-03-02T15:02:08.954Z",
+      "username": "Иван Иванов",
+      "email": "ivan.ivanov@ya.ru",
+      "avatar": "/users/users_default.webp",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": 7,
+    "fields": {
+      "password": "pbkdf2_sha256$870000$Vx9DYOTupC76VUCFQLhRvh$n8Wn+xl0FR9t+/w/kz4rlgjEoxGq4Yw/V3ni9jCW8tY=",
+      "last_login": "2025-03-05T12:21:30.996Z",
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-03-02T15:02:57.388Z",
+      "username": "Семён Семёнов",
+      "email": "semen.semenov@ya.ru",
+      "avatar": "/users/users_default.webp",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": 8,
+    "fields": {
+      "password": "pbkdf2_sha256$870000$n2iWqNzQAdfeBIpUMlNvvs$Rxe+OiaE1mOTgR0FCy9kdMGRQ6c+144S1nUPjc39S+U=",
+      "last_login": "2025-03-05T12:40:24.521Z",
+      "is_superuser": true,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2025-03-02T16:44:32.849Z",
+      "username": "Станислав Маяцкий",
+      "email": "stasm226@gmail.com",
+      "avatar": "/users/users_default.webp",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": 9,
+    "fields": {
+      "password": "pbkdf2_sha256$870000$2OXF4XFPVE41ixzcmMk3Cy$nIvGPt64Phzz1aqezjMH73erW5GTCa1HYYvGApB2Zvs=",
+      "last_login": "2025-03-05T12:27:49.727Z",
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-03-05T05:49:55Z",
+      "username": "Keira Knightley",
+      "email": "keira.knightley@ya.ru",
+      "avatar": "/users/users_default.webp",
+      "groups": [],
+      "user_permissions": []
+    }
+  }
+]

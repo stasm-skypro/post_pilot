@@ -1,0 +1,92 @@
+[
+  {
+    "model": "postpilot.Recipient",
+    "pk": 1,
+    "fields": {
+      "email": "john.doe@example.com",
+      "full_name": "John Doe",
+      "comments": "Постоянный клиент, интересуется новыми предложениями."
+    }
+  },
+  {
+    "model": "postpilot.Recipient",
+    "pk": 2,
+    "fields": {
+      "email": "jane.smith@example.com",
+      "full_name": "Jane Smith",
+      "comments": "Запрашивала рассылку акций."
+    }
+  },
+  {
+    "model": "postpilot.Recipient",
+    "pk": 3,
+    "fields": {
+      "email": "michael.brown@example.com",
+      "full_name": "Michael Brown",
+      "comments": "Интересуется вопросами социальной справедливости."
+    }
+  },
+  {
+    "model": "postpilot.Recipient",
+    "pk": 4,
+    "fields": {
+      "email": "emily.white@example.com",
+      "full_name": "Emily White",
+      "comments": "Любит получать новости о скидках."
+    }
+  },
+  {
+    "model": "postpilot.Recipient",
+    "pk": 5,
+    "fields": {
+      "email": "david.clark@example.com",
+      "full_name": "David Clark",
+      "comments": "Регулярный покупатель, интересуется новыми товарами."
+    }
+  },
+  {
+    "model": "postpilot.Recipient",
+    "pk": 6,
+    "fields": {
+      "email": "sophia.miller@example.com",
+      "full_name": "Sophia Miller",
+      "comments": "Предпочитает получать обновления раз в месяц."
+    }
+  },
+  {
+    "model": "postpilot.Recipient",
+    "pk": 7,
+    "fields": {
+      "email": "william.johnson@example.com",
+      "full_name": "William Johnson",
+      "comments": "Интересуется сезонными предложениями."
+    }
+  },
+  {
+    "model": "postpilot.Recipient",
+    "pk": 8,
+    "fields": {
+      "email": "olivia.brown@example.com",
+      "full_name": "Olivia Brown",
+      "comments": "Запрашивала индивидуальные скидки."
+    }
+  },
+  {
+    "model": "postpilot.Recipient",
+    "pk": 9,
+    "fields": {
+      "email": "james.wilson@example.com",
+      "full_name": "James Wilson",
+      "comments": "Постоянный клиент, рекомендует наш сервис друзьям."
+    }
+  },
+  {
+    "model": "postpilot.Recipient",
+    "pk": 10,
+    "fields": {
+      "email": "ava.moore@example.com",
+      "full_name": "Ava Moore",
+      "comments": "Участвует в программе лояльности."
+    }
+  }
+]
